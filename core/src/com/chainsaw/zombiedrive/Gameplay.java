@@ -16,7 +16,6 @@ final public class Gameplay {
     public static float totalMileage;
     public static float exitMileage;
     public static boolean exitOnScreen = false;
-    public static boolean spawnExit = false;
     public static float carX;
     public static int carHealth;
     static int exitThreshold = 60;
@@ -38,7 +37,7 @@ final public class Gameplay {
         zombieCount = 0;
         mileage = 0;
         exitMileage = 0;
-        spawnExit = false;
+//        spawnExit = false;
         exitOnScreen = false;
     }
 
@@ -81,16 +80,16 @@ final public class Gameplay {
     public static int getZombieType() {
         int type = Zombie.ZOMBIE_NORMAL;
 
-        if (zombieCount < MathUtils.random(10, 20) / level) {
+        if (zombieCount < MathUtils.random(10, 15) / level) {
             type = Zombie.ZOMBIE_FAT;
         }
-        if (zombieCount < MathUtils.random(20, 30) / level) {
+        if (zombieCount < MathUtils.random(15, 20) / level) {
             type = Zombie.ZOMBIE_NORMAL;
         }
-        if (zombieCount > MathUtils.random(30, 35) / level) {
+        if (zombieCount > MathUtils.random(20, 25) / level) {
             type = Zombie.ZOMBIE_FEMALE;
         }
-        if (zombieCount > MathUtils.random(30, 40) / level) {
+        if (zombieCount > MathUtils.random(25, 30) / level) {
             zombieCount = 0;
         }
 

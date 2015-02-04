@@ -43,10 +43,10 @@ public class HUD extends Actor {
             batch.draw(Assets.img_zombie_wrench, Gameplay.getWrenchX(), wrenchY);
         }
 
-        if (Gameplay.spawnExit && !Gameplay.exitOnScreen) {
-            batch.setColor(1, 1, 1, alphaBlinker());
-            batch.draw(Assets.img_exit_sign, Gameplay.getExitX(), exitY);
-        }
+//        if (Gameplay.spawnExit && !Gameplay.exitOnScreen) {
+//            batch.setColor(1, 1, 1, alphaBlinker());
+//            batch.draw(Assets.img_exit_sign, Gameplay.getExitX(), exitY);
+//        }
 
         batch.setColor(1, 1, 1, 1);
         // drawScore(batch);
