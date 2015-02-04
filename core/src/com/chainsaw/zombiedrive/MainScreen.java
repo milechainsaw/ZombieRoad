@@ -52,6 +52,8 @@ public class MainScreen implements Screen {
         btnStyleMute = new TextButtonStyle();
         btnStyleMute.font = Assets.font;
 
+
+        //TODO SET GAME LEVEL
         Gameplay.level = 2f;
         Gameplay.setSpawnWrench(false);
 
@@ -163,6 +165,8 @@ public class MainScreen implements Screen {
 					 */
                     if (entity.kindOfZombie == Zombie.ZOMBIE_WRENCH) {
                         car.repair();
+
+                        //TODO Set speedup factor
                         Gameplay.level += 0.2;
                         Gameplay.setSpawnWrench(false);
                         Gameplay.wrenchOnScreen = false;
@@ -170,14 +174,14 @@ public class MainScreen implements Screen {
                         pool.free(entity);
                         zombies.remove(i);
 
-                    } else if (entity.kindOfZombie == Zombie.ZOMBIE_EXIT) {
-
-                        // END OF LEVEL
-                        //
-                        //
-                        Gameplay.totalMileage += Gameplay.getDistance();
-                        Gameplay.resetScore();
-                        game.setScreen(new LoadingScreen(game));
+//                    } else if (entity.kindOfZombie == Zombie.ZOMBIE_EXIT) {
+//
+//                        // END OF LEVEL
+//                        //
+//                        //
+//                        Gameplay.totalMileage += Gameplay.getDistance();
+//                        Gameplay.resetScore();
+//                        game.setScreen(new LoadingScreen(game));
 
                     } else {
                         car.hit(entity.hitpoints);
@@ -205,11 +209,11 @@ public class MainScreen implements Screen {
                     Gameplay.wrenchOnScreen = false;
                 }
 
-                if (entity.kindOfZombie == Zombie.ZOMBIE_EXIT) {
-                    Gameplay.exitOnScreen = false;
-                    Gameplay.spawnExit = false;
-                    Gameplay.exitMileage = 0;
-                }
+//                if (entity.kindOfZombie == Zombie.ZOMBIE_EXIT) {
+//                    Gameplay.exitOnScreen = false;
+//                    Gameplay.spawnExit = false;
+//                    Gameplay.exitMileage = 0;
+//                }
                 entity.remove();
                 pool.free(entity);
                 zombies.remove(i);
@@ -225,29 +229,29 @@ public class MainScreen implements Screen {
     }
 
     public void spawnZombie() {
-        int ZombieType = Gameplay.getZombieType();
+        int zombieType = Gameplay.getZombieType();
         float last_x = MathUtils.random(0, (int) (ZombieDrive.WIDTH - Math
-                .ceil(Zombie.getWidthByType(ZombieType) * 1.5)));
+                .ceil(Zombie.getWidthByType(zombieType) * 1.5)));
 
         Zombie zombie = pool.obtain();
-        zombie.init(ZombieType, last_x);
+        zombie.init(zombieType, last_x);
 
         if (Car.health < 30 && !Gameplay.spawnWrench) {
             Gameplay.setSpawnWrench(true);
         }
 
         Gameplay.setZombieCount();
-        if (ZombieType == Zombie.ZOMBIE_WRENCH) {
+        if (zombieType == Zombie.ZOMBIE_WRENCH) {
             Gameplay.setSpawnWrench(false);
             Gameplay.wrenchOnScreen = true;
             zombie.setX(Gameplay.getWrenchX());
         }
 
-        if (ZombieType == Zombie.ZOMBIE_EXIT) {
-            Gameplay.exitOnScreen = true;
-            Gameplay.spawnExit = false;
-            zombie.setX(Gameplay.getExitX());
-        }
+//        if (zombieType == Zombie.ZOMBIE_EXIT) {
+//            Gameplay.exitOnScreen = true;
+//            Gameplay.spawnExit = false;
+//            zombie.setX(Gameplay.getExitX());
+//        }
 
         zombies.add(zombie);
         stage.addActor(zombie);

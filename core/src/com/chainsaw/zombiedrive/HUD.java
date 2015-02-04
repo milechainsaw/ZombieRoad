@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class HUD extends Actor {
 
     private static int maxValue = ZombieDrive.WIDTH;
-    private static int height = ZombieDrive.HEIGHT / 15;
+    private static int height = ZombieDrive.HEIGHT / 25;
     private final int wrenchY = ZombieDrive.HEIGHT
             - Assets.img_zombie_wrench.getRegionHeight();
     private final int exitY = ZombieDrive.HEIGHT

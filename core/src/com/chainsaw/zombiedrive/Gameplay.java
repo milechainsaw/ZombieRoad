@@ -71,15 +71,32 @@ final public class Gameplay {
     }
 
     public static float getSpawnTime() {
-        return MathUtils.random(1000000000, 2000000000) / (float) level;
+        return MathUtils.random(1000000000, 2000000000) / level;
     }
 
     public static int getWrenchSeparation() {
-        return (int) level * 5;
+        return Math.round(level * 5);
     }
 
     public static int getZombieType() {
-        int type;
+        int type = Zombie.ZOMBIE_NORMAL;
+
+        if (zombieCount < MathUtils.random(10, 20) / level) {
+            type = Zombie.ZOMBIE_FAT;
+        }
+        if (zombieCount < MathUtils.random(20, 30) / level) {
+            type = Zombie.ZOMBIE_NORMAL;
+        }
+        if (zombieCount > MathUtils.random(30, 35) / level) {
+            type = Zombie.ZOMBIE_FEMALE;
+        }
+        if (zombieCount > MathUtils.random(30, 40) / level) {
+            zombieCount = 0;
+        }
+
+
+        /*
+        Old zombie selection logic
 
         if (zombieCount < 14) {
             type = Zombie.ZOMBIE_NORMAL;
@@ -93,16 +110,17 @@ final public class Gameplay {
 
         if (zombieCount > 28) {
             zombieCount = 0;
-        }
+        }*/
 
         if (wZombieCount == 0) {
             type = Zombie.ZOMBIE_WRENCH;
             wZombieCount--;
         }
 
-        if (Gameplay.exitMileage > exitThreshold && !Gameplay.exitOnScreen) {
-            type = Zombie.ZOMBIE_EXIT;
-        }
+        //TODO EXIT strategy
+//        if (Gameplay.exitMileage > exitThreshold && !Gameplay.exitOnScreen) {
+//            type = Zombie.ZOMBIE_EXIT;
+//        }
 
         return type;
     }
