@@ -1,6 +1,5 @@
 package com.chainsaw.zombiedrive;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
+
+    public static Texture img_sound_on;
+    public static Texture img_sound_off;
 
     public static TextureRegion img_zombie_fat;
     public static TextureRegion img_zombie_female;
@@ -37,10 +39,6 @@ public class Assets {
     public static Boolean isMuted;
     static TextureAtlas mainTextures;
 
-    private static Texture loadTexture(String file) {
-        return new Texture(Gdx.files.internal(file));
-    }
-
     private static TextureRegion findRegion(String region) {
         return new TextureRegion(mainTextures.findRegion(region));
     }
@@ -53,6 +51,10 @@ public class Assets {
         ZombieDrive.manager.load("sfx/hit_3.wav", Sound.class);
         ZombieDrive.manager.load("sfx/hit_wrench.wav", Sound.class);
         ZombieDrive.manager.load("sfx/ambient.mp3", Music.class);
+        ZombieDrive.manager.load("gfx/sound.png", Texture.class);
+        ZombieDrive.manager.load("gfx/mute.png", Texture.class);
+        ZombieDrive.manager.load("gfx/road.png", Texture.class);
+
     }
 
     public static void assign() {
@@ -69,8 +71,11 @@ public class Assets {
         img_car_L = findRegion("car_E");
         img_headlights = findRegion("headlights");
         img_blood = findRegion("blood");
-        img_road = loadTexture("gfx/road.png");
+        img_road = ZombieDrive.manager.get("gfx/road.png", Texture.class);
         img_exit_sign = findRegion("exit_sign");
+
+        img_sound_off = ZombieDrive.manager.get("gfx/mute.png", Texture.class);
+        img_sound_on = ZombieDrive.manager.get("gfx/sound.png", Texture.class);
 
         font = ZombieDrive.manager.get("gfx/font.fnt", BitmapFont.class);
 
@@ -103,7 +108,6 @@ public class Assets {
 
     public static void destroy() {
         ZombieDrive.manager.dispose();
-
     }
 
 }

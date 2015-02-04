@@ -281,12 +281,15 @@ public class MainScreen implements Screen {
             TextButtonStyle btnStyle = new TextButtonStyle();
             btnStyle.font = Assets.font;
 
+
             if (Assets.isMuted)
                 menuSetMuteColor(Color.RED);
             if (!Assets.isMuted)
                 menuSetMuteColor(Color.WHITE);
 
             Button resumeButton = new TextButton("resume", btnStyle);
+
+
             Button muteButton = new TextButton("Mute", btnStyleMute);
             muteButton.setWidth(muteButton.getWidth() + 40);
 
