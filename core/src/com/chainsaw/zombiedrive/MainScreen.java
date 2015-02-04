@@ -92,6 +92,11 @@ public class MainScreen implements Screen {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
 
+        if (Gameplay.gamePaused) {
+            spawnTime = TimeUtils.nanoTime();   // Need this to wait for next spawn after pause
+        }
+
+
         if (!Gameplay.gamePaused) {
             stage.act(Gdx.graphics.getDeltaTime());
             testCollision();
@@ -104,15 +109,15 @@ public class MainScreen implements Screen {
                     || Gdx.input.isKeyPressed(Keys.M)) {
                 pauseGame();
             }
-            if (Gameplay.exitMileage > Gameplay.exitThreshold - 20
-                    && !Gameplay.spawnExit) {
-                Gameplay.spawnExit = true;
-                Gameplay.setExitX();
-            }
+//            if (Gameplay.exitMileage > Gameplay.exitThreshold - 20
+//                    && !Gameplay.spawnExit) {
+//                Gameplay.spawnExit = true;
+//                Gameplay.setExitX();
+//            }
 
             if (car.wrecked) {
                 //
-                // GAME OLIVER
+                // TODO GAME OLIVER
                 //
                 Gameplay.totalMileage += Gameplay.getDistance();
                 Gameplay.resetScore();

@@ -70,7 +70,7 @@ final public class Gameplay {
     }
 
     public static float getSpawnTime() {
-        return MathUtils.random(1000000000, 2000000000) / level;
+        return MathUtils.random(1000000000, Integer.MAX_VALUE) / level;
     }
 
     public static int getWrenchSeparation() {
@@ -80,11 +80,8 @@ final public class Gameplay {
     public static int getZombieType() {
         int type = Zombie.ZOMBIE_NORMAL;
 
-        if (zombieCount < MathUtils.random(10, 15) / level) {
+        if (zombieCount > MathUtils.random(15, 20) / level) {
             type = Zombie.ZOMBIE_FAT;
-        }
-        if (zombieCount < MathUtils.random(15, 20) / level) {
-            type = Zombie.ZOMBIE_NORMAL;
         }
         if (zombieCount > MathUtils.random(20, 25) / level) {
             type = Zombie.ZOMBIE_FEMALE;
