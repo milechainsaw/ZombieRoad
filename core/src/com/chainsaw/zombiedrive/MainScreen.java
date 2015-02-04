@@ -2,9 +2,7 @@ package com.chainsaw.zombiedrive;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,11 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -38,7 +32,6 @@ public class MainScreen implements Screen {
     private Rectangle zombiRect;
     private float spawnTime;
 
-    private boolean menuVisible;
     private Stage menuStage;
     private TextButtonStyle btnStyleMute;
     private Pool<Zombie> pool = new Pool<Zombie>() {
@@ -78,14 +71,11 @@ public class MainScreen implements Screen {
         Gdx.input.setCatchBackKey(false);
         Gdx.input.setInputProcessor(stage);
 
-        // Gameplay.gamePaused = false;
-
         spawnTime = TimeUtils.nanoTime();
         carRect = new Rectangle();
         zombiRect = new Rectangle();
         if (!Assets.isMuted)
             Assets.ambientMusic.play();
-        menuVisible = false;
         setUpMuteButton(stage);
         setUpPlayPause(stage);
     }
@@ -108,15 +98,6 @@ public class MainScreen implements Screen {
             if (Gdx.input.isTouched()) {
                 car.move(Gdx.input.getX() * ZombieDrive.ScaleWidht);
             }
-            if (Gdx.input.isKeyPressed(Keys.MENU)
-                    || Gdx.input.isKeyPressed(Keys.M)) {
-                pauseGame();
-            }
-//            if (Gameplay.exitMileage > Gameplay.exitThreshold - 20
-//                    && !Gameplay.spawnExit) {
-//                Gameplay.spawnExit = true;
-//                Gameplay.setExitX();
-//            }
 
             if (car.wrecked) {
                 //
@@ -129,11 +110,6 @@ public class MainScreen implements Screen {
             }
 
         }
-		/*
-         * if (menuVisible) {
-		 * menuStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-		 * menuStage.draw(); }
-		 */
 
     }
 
@@ -157,7 +133,7 @@ public class MainScreen implements Screen {
                         && (!entity.dead)) {
 
 					/*
-					 * Check if we hit the WRENCH, if yes repair the car
+                     * Check if we hit the WRENCH, if yes repair the car
 					 */
                     if (entity.kindOfZombie == Zombie.ZOMBIE_WRENCH) {
                         car.repair();
@@ -324,90 +300,6 @@ public class MainScreen implements Screen {
         playButton.setY(ZombieDrive.HEIGHT - 80);
 
         stage.addActor(playButton);
-    }
-
-
-    private void showMenu(Boolean show) {
-        if (!Assets.isMuted)
-            Assets.hit_zombie_wrench.play();
-
-        if (show) {
-            Gdx.input.setCatchBackKey(true);
-			/*
-			 * all logic required to show a menu
-			 */
-            menuStage = new Stage();
-            menuVisible = true;
-
-            Gdx.input.setInputProcessor(menuStage);
-
-            TextButtonStyle btnStyle = new TextButtonStyle();
-            btnStyle.font = Assets.font;
-
-
-            if (Assets.isMuted)
-                menuSetMuteColor(Color.RED);
-            if (!Assets.isMuted)
-                menuSetMuteColor(Color.WHITE);
-
-            Button resumeButton = new TextButton("resume", btnStyle);
-
-
-            Window dialogWindow = new Window("PAUSE", new WindowStyle(
-                    Assets.font, Color.RED, null));
-
-            dialogWindow.setHeight(ZombieDrive.HEIGHT / 3);
-            dialogWindow.setWidth(ZombieDrive.WIDTH / 2);
-            dialogWindow.setPosition(ZombieDrive.WIDTH / 4,
-                    ZombieDrive.HEIGHT / 4);
-
-            dialogWindow.align(Align.center);
-            dialogWindow.row().fill().expandX();
-            dialogWindow.add(resumeButton);
-//            dialogWindow.add(muteButton);
-
-            resumeButton.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    showMenu(false);
-                }
-
-            });
-
-//            muteButton.addListener(new ChangeListener() {
-//
-//                @Override
-//                public void changed(ChangeEvent event, Actor actor) {
-//                    if (Assets.isMuted) {
-//                        Assets.unMute();
-//                        muteButton.setChecked(false);
-//                        menuSetMuteColor(Color.WHITE);
-//                    } else {
-//                        muteButton.setChecked(true);
-//                        menuSetMuteColor(Color.RED);
-//                        Assets.mute();
-//                    }
-//                }
-//
-//            });
-
-            menuStage.addActor(dialogWindow);
-			/*
-			 * End of Menu Logic
-			 */
-
-        } else {
-            Gdx.input.setCatchBackKey(false);
-            Gdx.input.setInputProcessor(stage);
-            menuStage.dispose();
-            resumeGame();
-            menuVisible = false;
-        }
-
-    }
-
-    private void menuSetMuteColor(Color color) {
-        btnStyleMute.fontColor = color;
     }
 
     private void pauseGame() {
