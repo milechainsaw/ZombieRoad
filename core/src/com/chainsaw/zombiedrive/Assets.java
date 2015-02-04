@@ -12,6 +12,9 @@ public class Assets {
 
     public static TextureRegionDrawable img_sound_on;
     public static TextureRegionDrawable img_sound_off;
+    public static TextureRegionDrawable img_pause;
+    public static TextureRegionDrawable img_play;
+
 
     public static TextureRegion img_zombie_fat;
     public static TextureRegion img_zombie_female;
@@ -55,7 +58,8 @@ public class Assets {
         ZombieDrive.manager.load("gfx/sound.png", Texture.class);
         ZombieDrive.manager.load("gfx/mute.png", Texture.class);
         ZombieDrive.manager.load("gfx/road.png", Texture.class);
-
+        ZombieDrive.manager.load("gfx/pause.png", Texture.class);
+        ZombieDrive.manager.load("gfx/play.png", Texture.class);
     }
 
     public static void assign() {
@@ -76,8 +80,9 @@ public class Assets {
         img_exit_sign = findRegion("exit_sign");
 
         img_sound_off = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/mute.png", Texture.class)));
-
         img_sound_on = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/sound.png", Texture.class)));
+        img_pause = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/pause.png", Texture.class)));
+        img_play = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/play.png", Texture.class)));
 
         font = ZombieDrive.manager.get("gfx/font.fnt", BitmapFont.class);
 

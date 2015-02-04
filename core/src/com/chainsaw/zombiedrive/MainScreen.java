@@ -87,6 +87,7 @@ public class MainScreen implements Screen {
             Assets.ambientMusic.play();
         menuVisible = false;
         setUpMuteButton(stage);
+        setUpPlayPause(stage);
     }
 
     @Override
@@ -127,19 +128,7 @@ public class MainScreen implements Screen {
 
             }
 
-        } else {
-            if (menuVisible) {
-                menuStage.draw();
-                menuStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-            } else {
-                showMenu(true);
-            }
-            if (Gdx.input.isKeyPressed(Keys.BACK)) {
-                showMenu(false);
-            }
-
         }
-
 		/*
          * if (menuVisible) {
 		 * menuStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -300,11 +289,43 @@ public class MainScreen implements Screen {
 
         muteButton.setWidth(80);
         muteButton.setHeight(80);
-        muteButton.setX(ZombieDrive.WIDTH - muteButton.getWidth());
-        muteButton.setY(ZombieDrive.HEIGHT - muteButton.getHeight());
+        muteButton.setX(ZombieDrive.WIDTH - 80);
+        muteButton.setY(ZombieDrive.HEIGHT - 80);
 
         stage.addActor(muteButton);
     }
+
+    private void setUpPlayPause(Stage stage) {
+        ImageButton.ImageButtonStyle playStyle = new ImageButton.ImageButtonStyle();
+        playStyle.checked = Assets.img_play;
+        playStyle.up = Assets.img_pause;
+
+        final Button playButton = new Button(playStyle);
+
+
+        playButton.addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (Gameplay.gamePaused) {
+                    resumeGame();
+                    playButton.setChecked(false);
+                } else {
+                    pauseGame();
+                    playButton.setChecked(true);
+                }
+            }
+
+        });
+
+        playButton.setWidth(80);
+        playButton.setHeight(80);
+        playButton.setX(ZombieDrive.WIDTH - 160);
+        playButton.setY(ZombieDrive.HEIGHT - 80);
+
+        stage.addActor(playButton);
+    }
+
 
     private void showMenu(Boolean show) {
         if (!Assets.isMuted)
