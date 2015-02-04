@@ -1,0 +1,82 @@
+
+MainScreen.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+headlights
+  rotate: false
+  xy: 1, 1
+  size: 1120, 1000
+  orig: 1120, 1000
+  offset: 0, 0
+  index: -1
+car_Q
+  rotate: false
+  xy: 1123, 821
+  size: 75, 180
+  orig: 75, 182
+  offset: 0, 1
+  index: -1
+car_W
+  rotate: false
+  xy: 1123, 640
+  size: 75, 179
+  orig: 75, 182
+  offset: 0, 1
+  index: -1
+car_E
+  rotate: false
+  xy: 1200, 825
+  size: 75, 176
+  orig: 75, 182
+  offset: 0, 1
+  index: -1
+exit_sign
+  rotate: false
+  xy: 1277, 893
+  size: 108, 108
+  orig: 108, 108
+  offset: 0, 0
+  index: -1
+zombie_shadow
+  rotate: false
+  xy: 1123, 484
+  size: 26, 154
+  orig: 36, 160
+  offset: 5, 6
+  index: -1
+wrench
+  rotate: false
+  xy: 1200, 765
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+blood
+  rotate: false
+  xy: 1277, 845
+  size: 42, 46
+  orig: 48, 48
+  offset: 2, 1
+  index: -1
+zombie_W
+  rotate: false
+  xy: 1387, 943
+  size: 30, 58
+  orig: 36, 60
+  offset: 3, 1
+  index: -1
+zombie_F
+  rotate: false
+  xy: 1151, 590
+  size: 34, 48
+  orig: 36, 60
+  offset: 1, 6
+  index: -1
+zombie_N
+  rotate: false
+  xy: 1123, 434
+  size: 26, 48
+  orig: 36, 60
+  offset: 5, 6
+  index: -1
