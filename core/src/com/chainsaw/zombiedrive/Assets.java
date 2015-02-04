@@ -6,11 +6,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class Assets {
 
-    public static Texture img_sound_on;
-    public static Texture img_sound_off;
+    public static TextureRegionDrawable img_sound_on;
+    public static TextureRegionDrawable img_sound_off;
 
     public static TextureRegion img_zombie_fat;
     public static TextureRegion img_zombie_female;
@@ -74,8 +75,9 @@ public class Assets {
         img_road = ZombieDrive.manager.get("gfx/road.png", Texture.class);
         img_exit_sign = findRegion("exit_sign");
 
-        img_sound_off = ZombieDrive.manager.get("gfx/mute.png", Texture.class);
-        img_sound_on = ZombieDrive.manager.get("gfx/sound.png", Texture.class);
+        img_sound_off = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/mute.png", Texture.class)));
+
+        img_sound_on = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/sound.png", Texture.class)));
 
         font = ZombieDrive.manager.get("gfx/font.fnt", BitmapFont.class);
 

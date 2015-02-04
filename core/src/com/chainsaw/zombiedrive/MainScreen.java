@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -85,6 +86,7 @@ public class MainScreen implements Screen {
         if (!Assets.isMuted)
             Assets.ambientMusic.play();
         menuVisible = false;
+        setUpMuteButton(stage);
     }
 
     @Override
@@ -149,8 +151,8 @@ public class MainScreen implements Screen {
     private void testCollision() {
 
         for (int i = 0; i < zombies.size(); i++) {
-			/*
-			 * First check if Zombie is in hit range
+            /*
+             * First check if Zombie is in hit range
 			 */
             Zombie entity = zombies.get(i);
             if ((entity.getY() < car.getY() + car.getHeight())
@@ -264,6 +266,46 @@ public class MainScreen implements Screen {
 
     }
 
+
+    private void setUpMuteButton(Stage stage) {
+        ImageButton.ImageButtonStyle muteStyle = new ImageButton.ImageButtonStyle();
+        muteStyle.checked = Assets.img_sound_off;
+        muteStyle.up = Assets.img_sound_on;
+
+        final Button muteButton = new Button(muteStyle);
+
+        if (Assets.isMuted) {
+            Assets.unMute();
+            muteButton.setChecked(false);
+        } else {
+            muteButton.setChecked(true);
+            Assets.mute();
+        }
+
+
+        muteButton.addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (Assets.isMuted) {
+                    Assets.unMute();
+                    muteButton.setChecked(false);
+                } else {
+                    muteButton.setChecked(true);
+                    Assets.mute();
+                }
+            }
+
+        });
+
+        muteButton.setWidth(80);
+        muteButton.setHeight(80);
+        muteButton.setX(ZombieDrive.WIDTH - muteButton.getWidth());
+        muteButton.setY(ZombieDrive.HEIGHT - muteButton.getHeight());
+
+        stage.addActor(muteButton);
+    }
+
     private void showMenu(Boolean show) {
         if (!Assets.isMuted)
             Assets.hit_zombie_wrench.play();
@@ -290,9 +332,6 @@ public class MainScreen implements Screen {
             Button resumeButton = new TextButton("resume", btnStyle);
 
 
-            Button muteButton = new TextButton("Mute", btnStyleMute);
-            muteButton.setWidth(muteButton.getWidth() + 40);
-
             Window dialogWindow = new Window("PAUSE", new WindowStyle(
                     Assets.font, Color.RED, null));
 
@@ -304,7 +343,7 @@ public class MainScreen implements Screen {
             dialogWindow.align(Align.center);
             dialogWindow.row().fill().expandX();
             dialogWindow.add(resumeButton);
-            dialogWindow.add(muteButton);
+//            dialogWindow.add(muteButton);
 
             resumeButton.addListener(new ChangeListener() {
                 @Override
@@ -314,20 +353,22 @@ public class MainScreen implements Screen {
 
             });
 
-            muteButton.addListener(new ChangeListener() {
-
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    if (Assets.isMuted) {
-                        Assets.unMute();
-                        menuSetMuteColor(Color.WHITE);
-                    } else {
-                        menuSetMuteColor(Color.RED);
-                        Assets.mute();
-                    }
-                }
-
-            });
+//            muteButton.addListener(new ChangeListener() {
+//
+//                @Override
+//                public void changed(ChangeEvent event, Actor actor) {
+//                    if (Assets.isMuted) {
+//                        Assets.unMute();
+//                        muteButton.setChecked(false);
+//                        menuSetMuteColor(Color.WHITE);
+//                    } else {
+//                        muteButton.setChecked(true);
+//                        menuSetMuteColor(Color.RED);
+//                        Assets.mute();
+//                    }
+//                }
+//
+//            });
 
             menuStage.addActor(dialogWindow);
 			/*
