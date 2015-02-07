@@ -3,7 +3,7 @@ untitled
 active: false
 - Duration - 
 lowMin: 90000.0
-lowMax: 10000.0
+lowMax: 90000.0
 - Count - 
 min: 180
 max: 201
@@ -147,5 +147,6 @@ continuous: true
 aligned: false
 additive: false
 behind: false
+premultipliedAlpha: false
 - Image Path -
 smoke.png

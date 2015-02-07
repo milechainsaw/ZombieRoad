@@ -103,9 +103,11 @@ public class MainScreen implements Screen {
                 //
                 // TODO GAME OLIVER
                 //
+                hud.remove();
                 Gameplay.totalMileage += Gameplay.getDistance();
                 Gameplay.resetScore();
-                game.setScreen(new LoadingScreen(game));
+                //   game.setScreen(new LoadingScreen(game));
+                Gameplay.gamePaused = true;
 
             }
 

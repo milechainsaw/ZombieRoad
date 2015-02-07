@@ -29,6 +29,8 @@ public class Assets {
 
     public static TextureRegion img_blood;
 
+    public static TextureRegion dark;
+
     public static Texture img_road;
 
     public static TextureRegion img_exit_sign;
@@ -83,6 +85,9 @@ public class Assets {
         img_sound_on = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/sound.png", Texture.class)));
         img_pause = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/pause.png", Texture.class)));
         img_play = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/play.png", Texture.class)));
+
+
+        dark = new TextureRegion(img_headlights, img_headlights.getRegionWidth() - 2, img_headlights.getRegionHeight() - 2, 1, 1);
 
         font = ZombieDrive.manager.get("gfx/font.fnt", BitmapFont.class);
 

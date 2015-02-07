@@ -7,24 +7,34 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.utils.Array;
 
-public class SmokeParticles {
+public class SmokeAndExplosionParticles {
     public int x;
     public int y;
     ParticleEffectPool smokeEffectPool;
+    ParticleEffectPool explosionPool;
     Array<PooledEffect> effects = new Array<PooledEffect>();
 
 
-    public SmokeParticles() {
+    public SmokeAndExplosionParticles() {
         ParticleEffect smoke = new ParticleEffect();
         smoke.load(Gdx.files.internal("gfx/smoke.p"),
                 Gdx.files.internal("gfx"));
-        smokeEffectPool = new ParticleEffectPool(smoke, 1, 3);
+        smokeEffectPool = new ParticleEffectPool(smoke, 2, 4);
 
-
+        ParticleEffect explosion = new ParticleEffect();
+        explosion.load(Gdx.files.internal("gfx/explode.p"), Gdx.files.internal("gfx"));
+        explosionPool = new ParticleEffectPool(explosion, 1, 1);
     }
 
     public void createSmoke() {
         PooledEffect effect = smokeEffectPool.obtain();
+        effect.setPosition(this.x, this.y);
+        effects.add(effect);
+    }
+
+    public void explode() {
+        effects.clear();
+        PooledEffect effect = explosionPool.obtain();
         effect.setPosition(this.x, this.y);
         effects.add(effect);
     }

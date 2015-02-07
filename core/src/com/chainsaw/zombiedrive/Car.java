@@ -20,10 +20,10 @@ public class Car extends Actor {
     private TextureRegion carImg;
     private TextureRegion headlightsImg;
     private Boolean smoking;
-    private SmokeParticles smoke;
+    private SmokeAndExplosionParticles smoke;
 
     public Car() {
-        health = 100;
+        health = 10; // TODO adjust this!
         carImg = Assets.img_car_H;
         headlightsImg = Assets.img_headlights;
         wrecked = false;
@@ -34,7 +34,7 @@ public class Car extends Actor {
         setHeight(height);
 
         smoking = false;
-        smoke = new SmokeParticles();
+        smoke = new SmokeAndExplosionParticles();
         smoke.x = (int) (getX() + width / 2);
         smoke.y = (int) (getY() + height - 20);
         //smoke.createSmoke();
@@ -65,22 +65,28 @@ public class Car extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         setZIndex(9);
-        batch.draw(this.headlightsImg, getX()
-                - (headlightsImg.getRegionWidth() / 2) + (width / 2), getY()
-                - headlights_height + height);
-        setZIndex(10);
-        batch.draw(this.carImg, getX(), getY());
+        if (!wrecked) {
+            batch.draw(this.headlightsImg, getX()
+                    - (headlightsImg.getRegionWidth() / 2) + (width / 2), getY()
+                    - headlights_height + height);
+            setZIndex(10);
+            batch.draw(this.carImg, getX(), getY());
+        } else {
+            batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
+        }
         if (smoking) smoke.draw(batch);
-
-
     }
 
 
     public void hit(int hitpoints) {
         health -= hitpoints;
 
-        if (health < 0 || health == 0)
+        if (health < 0 || health == 0) {
+            smoke.y = (int) (getY() + height / 2);
+            smoke.explode();
             wrecked = true;
+        }
+
 
         if (health < DAMAGE_HALF) {
             carImg = Assets.img_car_L;
