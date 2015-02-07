@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -15,15 +16,17 @@ public class HUD extends Actor {
             - Assets.img_zombie_wrench.getRegionHeight();
     private final int exitY = ZombieDrive.HEIGHT
             - Assets.img_exit_sign.getRegionHeight();
-    boolean drawKillText = false;
-    boolean drawAvoidText = false;
-    boolean drawSpeedUpText = true;
+
+    boolean drawMessageText = true;
+    private long messageStartTime = 0;
+    private String mMessage = "ZOMBIE";
+
     private Texture hudTexture;
     private Pixmap pixmapBar;
     private int health;
     private float alphaBlinkerTemp;
     private int sign = 1;
-    private long messageStartTime = 0;
+
 
     public HUD() {
         pixmapBar = new Pixmap(maxValue, height, Pixmap.Format.RGBA8888);
@@ -35,9 +38,6 @@ public class HUD extends Actor {
 
     }
 
-    public static void postSlowMessage() {
-
-    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -48,14 +48,8 @@ public class HUD extends Actor {
             batch.draw(Assets.img_zombie_wrench, Gameplay.getWrenchX(), wrenchY);
         }
 
-        if (drawKillText) {
-            drawKillText(batch);
-        }
-        if (drawAvoidText) {
-            drawAvoidText(batch);
-        }
-        if (drawSpeedUpText) {
-            drawSpeedUpText(batch);
+        if (drawMessageText) {
+            drawMessageText(batch);
         }
 
         batch.setColor(1, 1, 1, 1);
@@ -65,47 +59,21 @@ public class HUD extends Actor {
 
     }
 
-    private void drawSpeedUpText(Batch batch) {
-        drawKillText = false;
-        drawAvoidText = false;
+    private void drawMessageText(Batch batch) {
         if (messageStartTime == 0)
             messageStartTime = TimeUtils.nanoTime();
-        if ((TimeUtils.nanoTime() - messageStartTime) < 2000000000l || alphaBlinker() > 0.1f) {
-            Assets.font.setColor(1, 1, 1, alphaBlinker());
-            Assets.font.draw(batch, "Speeding Up!", 100, 100);
+        if ((TimeUtils.nanoTime() - messageStartTime) < 5000000000l) {
+            Assets.font.setColor(1f, 0.2f, 0.2f, 1f);
+            BitmapFont.TextBounds bounds = Assets.font.getBounds(mMessage);
+            Assets.font.draw(batch, mMessage, (ZombieDrive.WIDTH / 2) - (bounds.width / 2), (ZombieDrive.HEIGHT / 2) - (bounds.height / 2));
         } else {
             messageStartTime = 0;
-            drawSpeedUpText = false;
+            drawMessageText = false;
         }
     }
 
-    private void drawAvoidText(Batch batch) {
-        drawKillText = false;
-        drawSpeedUpText = false;
-        if (messageStartTime == 0)
-            messageStartTime = TimeUtils.nanoTime();
-        if ((TimeUtils.nanoTime() - messageStartTime) < 2000000000l || alphaBlinker() > 0.1f) {
-            Assets.font.setColor(1, 1, 1, alphaBlinker());
-            Assets.font.draw(batch, "Avoid Zombies!", 100, 100);
-        } else {
-            messageStartTime = 0;
-            drawAvoidText = false;
-        }
-    }
-
-    private void drawKillText(Batch batch) {
-        drawAvoidText = false;
-        drawSpeedUpText = false;
-        if (messageStartTime == 0)
-            messageStartTime = TimeUtils.nanoTime();
-        if ((TimeUtils.nanoTime() - messageStartTime) < 2000000000l || alphaBlinker() > 0.1f) {
-            Assets.font.setColor(1, 1, 1, alphaBlinker());
-            Assets.font.draw(batch, "Run them over!", 100, 100);
-        } else {
-            messageStartTime = 0;
-            drawKillText = false;
-        }
-
+    void setMessage(String text) {
+        mMessage = text;
     }
 
     // private void drawScore(SpriteBatch batch) {

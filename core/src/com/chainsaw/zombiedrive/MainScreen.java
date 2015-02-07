@@ -136,6 +136,8 @@ public class MainScreen implements Screen {
                      * Check if we hit the WRENCH, if yes repair the car
 					 */
                     if (entity.kindOfZombie == Zombie.ZOMBIE_WRENCH) {
+                        hud.setMessage("Faster!");
+                        hud.drawMessageText = true;
                         car.repair();
 
                         //TODO Set speedup factor
@@ -163,8 +165,8 @@ public class MainScreen implements Screen {
                                 entity.getY());
                         particles.createBlood();
                     }
-					/*
-					 * Update the HealthBar when anything is hit.
+                    /*
+                     * Update the HealthBar when anything is hit.
 					 */
                     hud.setHealth(Car.health);
 
