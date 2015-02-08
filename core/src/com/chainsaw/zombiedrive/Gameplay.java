@@ -15,9 +15,9 @@ final public class Gameplay {
     public static boolean wrenchOnScreen = false;
     public static float totalMileage;
     public static float exitMileage;
-    public static boolean exitOnScreen = false;
     public static float carX;
     public static int carHealth;
+    public static boolean gameOver;
     static int exitThreshold = 60;
     private static int zombieCount;
     private static int wZombieCount;
@@ -30,6 +30,7 @@ final public class Gameplay {
     }
 
     public static void resetScore() {
+        gameOver = false;
         score = 0;
         killCount_F = 0;
         killCount_N = 0;
@@ -38,7 +39,6 @@ final public class Gameplay {
         mileage = 0;
         exitMileage = 0;
 //        spawnExit = false;
-        exitOnScreen = false;
     }
 
     public static int getWrenchX() {

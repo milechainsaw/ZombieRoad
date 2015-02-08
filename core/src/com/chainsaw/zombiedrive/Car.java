@@ -24,6 +24,8 @@ public class Car extends Actor {
     private SmokeAndExplosionParticles smoke;
 
     private float mLastX = 0;
+    private boolean movingLeft;
+    private boolean movingRight;
 
     public Car() {
         health = 10; // TODO adjust this!
@@ -43,7 +45,47 @@ public class Car extends Actor {
         //smoke.createSmoke();
     }
 
-    public void move(float x) {
+
+    public void moveLeft() {
+        skid();
+        movingRight = false;
+        movingLeft = true;
+    }
+
+    public void moveRight() {
+        skid();
+        movingLeft = false;
+        movingRight = true;
+    }
+
+    public void stop() {
+        movingLeft = false;
+        movingRight = false;
+        setRotation(0);
+    }
+
+    private void skid() {
+        switch (MathUtils.random(0, 10)) {
+            case 0:
+            case 1:
+            case 2:
+                Assets.skid_1.play(0.1f);
+                break;
+            case 3:
+            case 4:
+            case 5:
+                Assets.skid_2.play(0.1f);
+                break;
+            default:
+                break;
+
+        }
+
+
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
         if (this.getX() < 0) {
             this.setX(0);
         }
@@ -51,24 +93,21 @@ public class Car extends Actor {
             this.setX(ZombieDrive.WIDTH - width);
         }
 
-        if (this.getX() > (x - width / 2) + 10
-                || this.getX() < (x - width / 2) - 10) {
-            if (this.getX() < (x - width / 2)) {
-                this.setX((float) (this.getX() + (ZombieDrive.GAME_SPEED
-                        * Gameplay.level / 2)));
-                this.setRotation(-2);
-            } else {
-                this.setX((float) (this.getX() - (ZombieDrive.GAME_SPEED
-                        * Gameplay.level / 2)));
-                this.setRotation(2f);
-            }
+        if (movingRight) {
+            this.setX((float) (this.getX() + (ZombieDrive.GAME_SPEED
+                    * Gameplay.level / 2)));
+            this.setRotation(-2);
         }
+        if (movingLeft) {
+            this.setX((float) (this.getX() - (ZombieDrive.GAME_SPEED
+                    * Gameplay.level / 2)));
+            this.setRotation(2f);
+        }
+
         smoke.x = (int) (getX() + width / 2);
         Gameplay.carX = getX();
-    }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
+
         setZIndex(9);
         if (!wrecked) {
             batch.draw(this.headlightsImg, getX()

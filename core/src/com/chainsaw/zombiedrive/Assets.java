@@ -14,6 +14,8 @@ public class Assets {
     public static TextureRegionDrawable img_sound_off;
     public static TextureRegionDrawable img_pause;
     public static TextureRegionDrawable img_play;
+    public static TextureRegionDrawable img_right;
+    public static TextureRegionDrawable img_left;
 
 
     public static TextureRegion img_zombie_fat;
@@ -74,6 +76,9 @@ public class Assets {
         ZombieDrive.manager.load("gfx/road.png", Texture.class);
         ZombieDrive.manager.load("gfx/pause.png", Texture.class);
         ZombieDrive.manager.load("gfx/play.png", Texture.class);
+        ZombieDrive.manager.load("gfx/left.png", Texture.class);
+        ZombieDrive.manager.load("gfx/right.png", Texture.class);
+
     }
 
     public static void assign() {
@@ -98,6 +103,8 @@ public class Assets {
         img_pause = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/pause.png", Texture.class)));
         img_play = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/play.png", Texture.class)));
 
+        img_left = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/left.png", Texture.class)));
+        img_right = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/right.png", Texture.class)));
 
         dark = new TextureRegion(img_headlights, img_headlights.getRegionWidth() - 2, img_headlights.getRegionHeight() - 2, 1, 1);
 

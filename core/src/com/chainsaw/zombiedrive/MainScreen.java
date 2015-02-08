@@ -6,12 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -75,6 +75,10 @@ public class MainScreen implements Screen {
         carRect = new Rectangle();
         zombiRect = new Rectangle();
 
+
+        setUpSteering(stage);
+
+
         Assets.ambientMusic.play();
         Assets.engineSound.play();
         setUpMuteButton(stage);
@@ -96,9 +100,9 @@ public class MainScreen implements Screen {
             testCollision();
             playZombies();
 
-            if (Gdx.input.isTouched()) {
-                car.move(Gdx.input.getX() * ZombieDrive.ScaleWidht);
-            }
+//            if (Gdx.input.isTouched()) {
+//                car.move(Gdx.input.getX() * ZombieDrive.ScaleWidht);
+//            }
 
             if (car.wrecked) {
                 //
@@ -106,8 +110,7 @@ public class MainScreen implements Screen {
                 //
                 hud.remove();
                 Gameplay.totalMileage += Gameplay.getDistance();
-                Gameplay.resetScore();
-                //   game.setScreen(new LoadingScreen(game));
+                Gameplay.gameOver = true;
                 Gameplay.gamePaused = true;
 
             }
@@ -177,7 +180,7 @@ public class MainScreen implements Screen {
             }
 
 			/*
-			 * If Zombie is out of bounds, release it
+             * If Zombie is out of bounds, release it
 			 */
 
             if (entity.oob) {
@@ -253,10 +256,9 @@ public class MainScreen implements Screen {
         }
 
 
-        muteButton.addListener(new ChangeListener() {
-
+        muteButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (Assets.isMuted) {
                     Assets.unMute();
                     muteButton.setChecked(false);
@@ -264,8 +266,8 @@ public class MainScreen implements Screen {
                     muteButton.setChecked(true);
                     Assets.mute();
                 }
+                super.touchUp(event, x, y, pointer, button);
             }
-
         });
 
         muteButton.setWidth(80);
@@ -284,10 +286,9 @@ public class MainScreen implements Screen {
         final Button playButton = new Button(playStyle);
 
 
-        playButton.addListener(new ChangeListener() {
-
+        playButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (Gameplay.gamePaused) {
                     resumeGame();
                     playButton.setChecked(false);
@@ -295,8 +296,13 @@ public class MainScreen implements Screen {
                     pauseGame();
                     playButton.setChecked(true);
                 }
-            }
 
+                if (Gameplay.gameOver) {
+                    newGame();
+                }
+
+                super.touchUp(event, x, y, pointer, button);
+            }
         });
 
         playButton.setWidth(80);
@@ -306,6 +312,58 @@ public class MainScreen implements Screen {
 
         stage.addActor(playButton);
     }
+
+    private void newGame() {
+        //TODO new Game!!!!
+        Gameplay.resetScore();
+        game.setScreen(new LoadingScreen(game));
+    }
+
+    private void setUpSteering(Stage stage) {
+        final Button leftButton = new ImageButton(Assets.img_left);
+
+
+        leftButton.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                car.moveLeft();
+                return super.touchDown(event, x, y, pointer, button);
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                car.stop();
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+        leftButton.setWidth(80);
+        leftButton.setHeight(80);
+        leftButton.setX(5);
+        leftButton.setY(ZombieDrive.HEIGHT / 12);
+        stage.addActor(leftButton);
+
+        final Button rightButton = new ImageButton(Assets.img_right);
+        rightButton.addListener(new ClickListener() {
+                                    @Override
+                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                        car.moveRight();
+                                        return super.touchDown(event, x, y, pointer, button);
+                                    }
+
+                                    @Override
+                                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                                        car.stop();
+                                        super.touchUp(event, x, y, pointer, button);
+                                    }
+                                }
+        );
+        rightButton.setWidth(80);
+        rightButton.setHeight(80);
+        rightButton.setX(ZombieDrive.WIDTH - rightButton.getWidth() - 5);
+        rightButton.setY(ZombieDrive.HEIGHT / 12);
+        stage.addActor(rightButton);
+    }
+
 
     private void pauseGame() {
         Gameplay.gamePaused = true;
