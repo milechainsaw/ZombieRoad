@@ -40,8 +40,14 @@ public class Assets {
     public static Sound hit_zombie_female;
     public static Sound hit_zombie_normal;
     public static Sound hit_zombie_wrench;
+    public static Sound skid_1;
+    public static Sound skid_2;
+    public static Sound explode;
     public static BitmapFont font;
     public static Music ambientMusic;
+    public static Music engineSound;
+
+
     public static Boolean isMuted;
     static TextureAtlas mainTextures;
 
@@ -56,7 +62,13 @@ public class Assets {
         ZombieDrive.manager.load("sfx/hit_2.wav", Sound.class);
         ZombieDrive.manager.load("sfx/hit_3.wav", Sound.class);
         ZombieDrive.manager.load("sfx/hit_wrench.wav", Sound.class);
+        ZombieDrive.manager.load("sfx/skid_1.wav", Sound.class);
+        ZombieDrive.manager.load("sfx/skid_2.wav", Sound.class);
+        ZombieDrive.manager.load("sfx/crash.wav", Sound.class);
         ZombieDrive.manager.load("sfx/ambient.mp3", Music.class);
+        ZombieDrive.manager.load("sfx/engine.wav", Music.class);
+
+
         ZombieDrive.manager.load("gfx/sound.png", Texture.class);
         ZombieDrive.manager.load("gfx/mute.png", Texture.class);
         ZombieDrive.manager.load("gfx/road.png", Texture.class);
@@ -99,22 +111,33 @@ public class Assets {
         hit_zombie_wrench = ZombieDrive.manager.get("sfx/hit_wrench.wav",
                 Sound.class);
 
+        skid_1 = ZombieDrive.manager.get("sfx/skid_1.wav", Sound.class);
+        skid_2 = ZombieDrive.manager.get("sfx/skid_2.wav", Sound.class);
+
+        explode = ZombieDrive.manager.get("sfx/crash.wav", Sound.class);
+
         ambientMusic = ZombieDrive.manager.get("sfx/ambient.mp3", Music.class);
-
         ambientMusic.setLooping(true);
-        ambientMusic.setVolume(0.5f);
+        ambientMusic.setVolume(0f);
 
-        isMuted = false;
+        engineSound = ZombieDrive.manager.get("sfx/engine.wav", Music.class);
+        engineSound.setLooping(true);
+        engineSound.setVolume(0.5f);
+
+
+        isMuted = true;
 
     }
 
     public static void mute() {
         ambientMusic.setVolume(0);
+        engineSound.setVolume(0);
         isMuted = true;
     }
 
     public static void unMute() {
-        ambientMusic.setVolume(0.5f);
+        ambientMusic.setVolume(0f);
+        engineSound.setVolume(0.5f);
         isMuted = false;
     }
 

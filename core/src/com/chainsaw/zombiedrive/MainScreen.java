@@ -74,8 +74,9 @@ public class MainScreen implements Screen {
         spawnTime = TimeUtils.nanoTime();
         carRect = new Rectangle();
         zombiRect = new Rectangle();
-        if (!Assets.isMuted)
-            Assets.ambientMusic.play();
+
+        Assets.ambientMusic.play();
+        Assets.engineSound.play();
         setUpMuteButton(stage);
         setUpPlayPause(stage);
     }

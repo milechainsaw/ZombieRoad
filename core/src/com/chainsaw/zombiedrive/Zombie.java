@@ -178,7 +178,7 @@ public class Zombie extends Actor implements Poolable {
 
     public void killZombie() {
         if (!dead && !Assets.isMuted) {
-            hitSound.play();
+            hitSound.play(0.3f);
         }
         zombieImg = Assets.img_blood;
 

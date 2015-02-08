@@ -135,7 +135,8 @@ public class HUD extends Actor {
     }
 
     private float alphaBlinker() {
-
+        if (Gameplay.gamePaused)
+            return alphaBlinkerTemp;
         if (alphaBlinkerTemp <= 0.01f || alphaBlinkerTemp >= 1f)
             sign *= -1;
         alphaBlinkerTemp += sign * 0.02f;

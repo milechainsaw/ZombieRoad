@@ -2,6 +2,7 @@ package com.chainsaw.zombiedrive;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -21,6 +22,8 @@ public class Car extends Actor {
     private TextureRegion headlightsImg;
     private Boolean smoking;
     private SmokeAndExplosionParticles smoke;
+
+    private float mLastX = 0;
 
     public Car() {
         health = 10; // TODO adjust this!
@@ -53,9 +56,11 @@ public class Car extends Actor {
             if (this.getX() < (x - width / 2)) {
                 this.setX((float) (this.getX() + (ZombieDrive.GAME_SPEED
                         * Gameplay.level / 2)));
+                this.setRotation(-2);
             } else {
                 this.setX((float) (this.getX() - (ZombieDrive.GAME_SPEED
                         * Gameplay.level / 2)));
+                this.setRotation(2f);
             }
         }
         smoke.x = (int) (getX() + width / 2);
@@ -70,11 +75,22 @@ public class Car extends Actor {
                     - (headlightsImg.getRegionWidth() / 2) + (width / 2), getY()
                     - headlights_height + height);
             setZIndex(10);
-            batch.draw(this.carImg, getX(), getY());
+            batch.draw(this.carImg, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         } else {
             batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
         }
         if (smoking) smoke.draw(batch);
+
+        if (getX() > mLastX + 10 || getX() < mLastX - 10) {
+            if (MathUtils.random(0, 10) > 5) {
+                Assets.skid_1.play(0.1f);
+            } else {
+                Assets.skid_2.play(0.1f);
+            }
+        } else {
+            setRotation(0f);
+        }
+        mLastX = getX();
     }
 
 
@@ -83,6 +99,7 @@ public class Car extends Actor {
 
         if (health < 0 || health == 0) {
             smoke.y = (int) (getY() + height / 2);
+            Assets.explode.play(0.4f);
             smoke.explode();
             wrecked = true;
         }
