@@ -336,10 +336,11 @@ public class MainScreen implements Screen {
                 super.touchUp(event, x, y, pointer, button);
             }
         });
-        leftButton.setWidth(80);
-        leftButton.setHeight(80);
+        leftButton.setWidth(100);
+        leftButton.setHeight(100);
         leftButton.setX(5);
         leftButton.setY(ZombieDrive.HEIGHT / 12);
+        leftButton.setZIndex(99);
         stage.addActor(leftButton);
 
         final Button rightButton = new ImageButton(Assets.img_right);
@@ -357,8 +358,9 @@ public class MainScreen implements Screen {
                                     }
                                 }
         );
-        rightButton.setWidth(80);
-        rightButton.setHeight(80);
+        rightButton.setWidth(100);
+        rightButton.setHeight(100);
+        rightButton.setZIndex(99);
         rightButton.setX(ZombieDrive.WIDTH - rightButton.getWidth() - 5);
         rightButton.setY(ZombieDrive.HEIGHT / 12);
         stage.addActor(rightButton);
