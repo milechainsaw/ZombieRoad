@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -31,17 +31,17 @@ public class LoadingScreen implements Screen {
 
     public LoadingScreen(Game g) {
         this.game = g;
-        ZombieDrive.manager.load("data/loading.pack", TextureAtlas.class);
-        ZombieDrive.manager.load("gfx/zombie.png", Texture.class);
-        ZombieDrive.manager.load("gfx/taptoplay.png", Texture.class);
-        ZombieDrive.manager.finishLoading();
+        ZombieRoad.manager.load("data/loading.pack", TextureAtlas.class);
+        ZombieRoad.manager.load("gfx/zombie.png", Texture.class);
+        ZombieRoad.manager.load("gfx/taptoplay.png", Texture.class);
+        ZombieRoad.manager.finishLoading();
 
-        stage = new Stage(new StretchViewport(ZombieDrive.WIDTH * 2, ZombieDrive.HEIGHT * 2));
+        stage = new Stage(new StretchViewport(ZombieRoad.WIDTH * 2, ZombieRoad.HEIGHT * 2));
 
-        TextureAtlas atlas = ZombieDrive.manager.get("data/loading.pack",
+        TextureAtlas atlas = ZombieRoad.manager.get("data/loading.pack",
                 TextureAtlas.class);
-        zombie = new Image(ZombieDrive.manager.get("gfx/zombie.png", Texture.class));
-        taptoplaytext = new Image(ZombieDrive.manager.get("gfx/taptoplay.png", Texture.class));
+        zombie = new Image(ZombieRoad.manager.get("gfx/zombie.png", Texture.class));
+        taptoplaytext = new Image(ZombieRoad.manager.get("gfx/taptoplay.png", Texture.class));
 
         logo = new Image(atlas.findRegion("libgdx-logo"));
         loadingFrame = new Image(atlas.findRegion("loading-frame"));
@@ -59,7 +59,7 @@ public class LoadingScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (ZombieDrive.manager.update()) {
+        if (ZombieRoad.manager.update()) {
             Assets.assign();
             displayTapInfo();
             if (Gdx.input.isTouched()) {
@@ -68,7 +68,7 @@ public class LoadingScreen implements Screen {
         }
 
         percent = Interpolation.linear.apply(percent,
-                ZombieDrive.manager.getProgress(), 0.1f);
+                ZombieRoad.manager.getProgress(), 0.1f);
 
         loadingBarHidden.setX(startX + endX * percent);
         loadingBg.setX(loadingBarHidden.getX() + 30);
@@ -94,14 +94,14 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void show() {
-        screenBg.setSize(ZombieDrive.WIDTH * 2, ZombieDrive.HEIGHT * 2);
+        screenBg.setSize(ZombieRoad.WIDTH * 2, ZombieRoad.HEIGHT * 2);
         logo.setX(10);
         logo.setY(10);
         logo.setScale(0.5f);
         loadingFrame.setX((stage.getWidth() - loadingFrame.getWidth()) / 2);
         loadingFrame.setY((stage.getHeight() - loadingFrame.getHeight()) / 2);
 
-        zombie.setSize(ZombieDrive.WIDTH / 2, ZombieDrive.HEIGHT / 2);
+        zombie.setSize(ZombieRoad.WIDTH / 2, ZombieRoad.HEIGHT / 2);
         zombie.setPosition(stage.getWidth() / 2 - zombie.getWidth() / 2f, 300 + stage.getHeight() / 2 - zombie.getHeight() / 2);
 
         taptoplaytext.setWidth(taptoplaytext.getWidth() * 2);
@@ -136,7 +136,7 @@ public class LoadingScreen implements Screen {
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-        ZombieDrive.manager.unload("data/loading.pack");
+        ZombieRoad.manager.unload("data/loading.pack");
 
     }
 

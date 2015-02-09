@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -68,15 +68,15 @@ public class Zombie extends Actor implements Poolable {
         oob = false;
 
         setType(zombieType);
-        setPosition(x, ZombieDrive.HEIGHT);
+        setPosition(x, ZombieRoad.HEIGHT);
         this.spawnTime = TimeUtils.nanoTime();
         position.x = x;
     }
 
     @Override
     public void act(float delta) {
-        speed = ZombieDrive.HEIGHT
-                / (float) (25 / (ZombieDrive.GAME_SPEED * Gameplay.level));
+        speed = ZombieRoad.HEIGHT
+                / (float) (25 / (ZombieRoad.GAME_SPEED * Gameplay.level));
         this.setY(this.getY() - (speed * delta));
 
         if (getY() < 20) {
@@ -92,7 +92,7 @@ public class Zombie extends Actor implements Poolable {
 
         if (getY() > 0) {
             if (!dead && kindOfZombie != Zombie.ZOMBIE_WRENCH && !Gameplay.carWrecked) {
-                if (getY() > ZombieDrive.HEIGHT / 7 + Car.height) {
+                if (getY() > ZombieRoad.HEIGHT / 7 + Car.height) {
                     setZIndex(2);
                     calcShadowParams(getX(), getY());
                     batch.setColor(1, 1, 1, shadowAlpha);
@@ -111,7 +111,7 @@ public class Zombie extends Actor implements Poolable {
 
     private void calcShadowParams(float x, float y) {
         j = (int) x - (int) Gameplay.carX;
-        k = (int) ((ZombieDrive.HEIGHT / 7) + Car.height) - (int) y;
+        k = (int) ((ZombieRoad.HEIGHT / 7) + Car.height) - (int) y;
         angle = Math.atan(j / k);
         shadowAngle = (float) Math.toDegrees(angle);
 

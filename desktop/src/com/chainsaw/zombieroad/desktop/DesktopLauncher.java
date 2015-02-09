@@ -1,8 +1,8 @@
-package com.chainsaw.zombiedrive.desktop;
+package com.chainsaw.zombieroad.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.chainsaw.zombiedrive.ZombieDrive;
+import com.chainsaw.zombieroad.ZombieRoad;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
@@ -11,6 +11,6 @@ public class DesktopLauncher {
         cfg.width = 480;
         cfg.height = 800;
 
-        new LwjglApplication(new ZombieDrive(), cfg);
+        new LwjglApplication(new ZombieRoad(), cfg);
     }
 }

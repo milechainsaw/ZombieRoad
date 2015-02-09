@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
@@ -15,14 +15,14 @@ public class Road extends Actor {
     public Road() {
         screenBackground = new Sprite();
         roadImg = Assets.img_road;
-        screenBackground.setSize(ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
+        screenBackground.setSize(ZombieRoad.WIDTH, ZombieRoad.HEIGHT);
         roadImg.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         screenBackground.setRegion(roadImg);
     }
 
     @Override
     public void act(float delta) {
-        speed = (ZombieDrive.HEIGHT / (float) (25 / (ZombieDrive.GAME_SPEED * Gameplay.level)))
+        speed = (ZombieRoad.HEIGHT / (float) (25 / (ZombieRoad.GAME_SPEED * Gameplay.level)))
                 * delta / roadImg.getHeight();
         screenBackground.scroll(0, -speed);
         if (!Gameplay.gamePaused)

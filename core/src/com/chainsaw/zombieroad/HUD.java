@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,10 +10,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class HUD extends Actor {
 
-    private static int maxValue = ZombieDrive.WIDTH;
-    private static int height = ZombieDrive.HEIGHT / 25;
-    private final int wrenchY = ZombieDrive.HEIGHT
+    private static int maxValue = ZombieRoad.WIDTH;
+    private static int height = ZombieRoad.HEIGHT / 25;
+    private final int wrenchY = ZombieRoad.HEIGHT
             - Assets.img_zombie_wrench.getRegionHeight();
+    private final String pauseMessage = "Paused";
 
     boolean drawMessageText = false;
     private long messageStartTime = 0;
@@ -24,12 +25,15 @@ public class HUD extends Actor {
     private int health;
     private float alphaBlinkerTemp;
     private int sign = 1;
+    private BitmapFont.TextBounds pauseBounds;
 
 
     public HUD() {
         pixmapBar = new Pixmap(maxValue, height, Pixmap.Format.RGBA8888);
         hudTexture = new Texture(pixmapBar);
         alphaBlinkerTemp = 1f;
+
+        pauseBounds = Assets.font.getBounds(pauseMessage);
 
         health = Car.health;
         prepareTexture();
@@ -50,6 +54,12 @@ public class HUD extends Actor {
                 drawMessageText(batch);
             }
 
+            if (Gameplay.gamePaused) {
+                Assets.font.setColor(1f, 0.2f, 0.2f, 1f);
+                batch.setColor(1, 1, 1, 1);
+                Assets.font.draw(batch, pauseMessage, (ZombieRoad.WIDTH / 2) - (pauseBounds.width / 2), (ZombieRoad.HEIGHT / 2) - (pauseBounds.height));
+            }
+
             batch.setColor(1, 1, 1, 1);
             this.setZIndex(12);
             batch.draw(hudTexture, 0, 0);
@@ -62,7 +72,7 @@ public class HUD extends Actor {
         if ((TimeUtils.nanoTime() - messageStartTime) < 5000000000l) {
             Assets.font.setColor(1f, 0.2f, 0.2f, 1f);
             BitmapFont.TextBounds bounds = Assets.font.getBounds(mMessage);
-            Assets.font.draw(batch, mMessage, (ZombieDrive.WIDTH / 2) - (bounds.width / 2), (ZombieDrive.HEIGHT / 2) - (bounds.height));
+            Assets.font.draw(batch, mMessage, (ZombieRoad.WIDTH / 2) - (bounds.width / 2), (ZombieRoad.HEIGHT / 2) - (bounds.height));
         } else {
             messageStartTime = 0;
             drawMessageText = false;

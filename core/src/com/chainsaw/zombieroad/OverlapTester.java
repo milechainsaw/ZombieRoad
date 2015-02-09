@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;

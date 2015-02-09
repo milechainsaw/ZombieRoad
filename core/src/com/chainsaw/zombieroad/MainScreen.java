@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -50,6 +50,8 @@ public class MainScreen implements Screen {
 
 
     public MainScreen(Game game) {
+        Gameplay.resetScore();
+
         btnStyleMute = new TextButtonStyle();
         btnStyleMute.font = Assets.font;
 
@@ -65,7 +67,7 @@ public class MainScreen implements Screen {
         hud = new HUD();
         particles = new BloodParticleActor();
 
-        stage = new Stage(new StretchViewport(ZombieDrive.WIDTH, ZombieDrive.HEIGHT));
+        stage = new Stage(new StretchViewport(ZombieRoad.WIDTH, ZombieRoad.HEIGHT));
         road = new Road();
 
         stage.clear();
@@ -137,7 +139,7 @@ public class MainScreen implements Screen {
 
         final ScoreActorNormal scoreActorNormal = new ScoreActorNormal();
 
-        int y = ZombieDrive.HEIGHT / 2 + ZombieDrive.HEIGHT / 4;
+        int y = ZombieRoad.HEIGHT / 2 + ZombieRoad.HEIGHT / 4;
         scoreActorNormal.setPosition(70, y);
 
         final float delay = 1f;
@@ -232,11 +234,6 @@ public class MainScreen implements Screen {
                         Gameplay.wrenchOnScreen = false;
                     }
 
-//                if (entity.kindOfZombie == Zombie.ZOMBIE_EXIT) {
-//                    Gameplay.exitOnScreen = false;
-//                    Gameplay.spawnExit = false;
-//                    Gameplay.exitMileage = 0;
-//                }
                     entity.remove();
                     pool.free(entity);
                     zombies.remove(i);
@@ -254,7 +251,7 @@ public class MainScreen implements Screen {
 
     public void spawnZombie() {
         int zombieType = Gameplay.getZombieType();
-        float last_x = MathUtils.random(0, (int) (ZombieDrive.WIDTH - Math
+        float last_x = MathUtils.random(0, (int) (ZombieRoad.WIDTH - Math
                 .ceil(Zombie.getWidthByType(zombieType) * 1.5)));
 
         Zombie zombie = pool.obtain();
@@ -323,8 +320,8 @@ public class MainScreen implements Screen {
 
         muteButton.setWidth(80);
         muteButton.setHeight(80);
-        muteButton.setX(ZombieDrive.WIDTH - 80);
-        muteButton.setY(ZombieDrive.HEIGHT - 80);
+        muteButton.setX(ZombieRoad.WIDTH - 80);
+        muteButton.setY(ZombieRoad.HEIGHT - 80);
 
         stage.addActor(muteButton);
     }
@@ -365,8 +362,8 @@ public class MainScreen implements Screen {
 
         playButton.setWidth(80);
         playButton.setHeight(80);
-        playButton.setX(ZombieDrive.WIDTH - 160);
-        playButton.setY(ZombieDrive.HEIGHT - 80);
+        playButton.setX(ZombieRoad.WIDTH - 160);
+        playButton.setY(ZombieRoad.HEIGHT - 80);
 
         stage.addActor(playButton);
     }
@@ -404,7 +401,7 @@ public class MainScreen implements Screen {
         leftButton.setWidth(100);
         leftButton.setHeight(100);
         leftButton.setX(5);
-        leftButton.setY(ZombieDrive.HEIGHT / 12);
+        leftButton.setY(ZombieRoad.HEIGHT / 12);
         stage.addActor(leftButton);
 
         rightButton = new ImageButton(Assets.img_right) {
@@ -431,24 +428,26 @@ public class MainScreen implements Screen {
         );
         rightButton.setWidth(100);
         rightButton.setHeight(100);
-        rightButton.setX(ZombieDrive.WIDTH - rightButton.getWidth() - 5);
-        rightButton.setY(ZombieDrive.HEIGHT / 12);
+        rightButton.setX(ZombieRoad.WIDTH - rightButton.getWidth() - 5);
+        rightButton.setY(ZombieRoad.HEIGHT / 12);
         stage.addActor(rightButton);
     }
 
 
     private void pauseGame() {
         Gameplay.gamePaused = true;
+        playButton.setChecked(true);
     }
 
     private void resumeGame() {
-        Gameplay.gamePaused = false;
+        if (car.wrecked)
+            newGame();
+        else
+            Gameplay.gamePaused = false;
     }
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -457,7 +456,6 @@ public class MainScreen implements Screen {
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -468,7 +466,6 @@ public class MainScreen implements Screen {
 
     @Override
     public void resume() {
-        Gdx.app.log("Resume iz MainScreen.java", "p");
     }
 
     @Override

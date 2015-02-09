@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class ScoreActorMileage extends Actor {
 
     ScoreActorMileage() {
-        if (!Assets.isMuted) Assets.hit_zombie_wrench.play();
+        if (!Assets.isMuted) Assets.hit_zombie_wrench.play(ZombieRoad.wrenchVolume);
     }
 
     @Override
@@ -22,6 +22,7 @@ public class ScoreActorMileage extends Actor {
     private void drawScore(Batch batch) {
         //Little zombie Images on the top
         Assets.font.setColor(Color.WHITE);
+        batch.setColor(1, 1, 1, 1);
         Assets.font.draw(batch, "Distance traveled: ", getX(),
                 getY() + Assets.font.getXHeight() * 1.5f);
         Assets.font.draw(batch, String.valueOf((int) (Gameplay.totalMileage / 1000)) + " miles", getX(), getY());

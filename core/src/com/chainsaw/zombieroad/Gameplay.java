@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.math.MathUtils;
 
@@ -44,7 +44,7 @@ final public class Gameplay {
     }
 
     public static void setWrenchX() {
-        wrenchX = MathUtils.random(0, ZombieDrive.WIDTH
+        wrenchX = MathUtils.random(0, ZombieRoad.WIDTH
                 - Assets.img_zombie_wrench.getRegionWidth());
     }
 

@@ -1,11 +1,11 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 
-public class ZombieDrive extends Game implements ApplicationListener {
+public class ZombieRoad extends Game implements ApplicationListener {
 
     public static int WIDTH;
     public static int HEIGHT;
@@ -15,6 +15,7 @@ public class ZombieDrive extends Game implements ApplicationListener {
     public static float ScaleHeight;
 
     public static AssetManager manager;
+    public static float wrenchVolume = 0.5f;
 
 
     @Override
@@ -52,7 +53,6 @@ public class ZombieDrive extends Game implements ApplicationListener {
     public void pause() {
         if (this.getScreen() instanceof MainScreen) {
             this.getScreen().pause();
-
         }
     }
 

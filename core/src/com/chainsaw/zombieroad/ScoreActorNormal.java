@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,7 +11,7 @@ public class ScoreActorNormal extends Actor {
 
     public ScoreActorNormal() {
         if (!Assets.isMuted)
-            Assets.hit_zombie_wrench.play();
+            Assets.hit_zombie_wrench.play(ZombieRoad.wrenchVolume);
     }
 
     @Override
@@ -25,6 +25,7 @@ public class ScoreActorNormal extends Actor {
     private void drawScore(Batch batch) {
         //Little zombie Images on the top
         Assets.font.setColor(Color.WHITE);
+        batch.setColor(1, 1, 1, 1);
         batch.draw(Assets.img_zombie_normal, getX(), getY());
         Assets.font.draw(batch, "x " + String.valueOf(Gameplay.killCount_N), getX() + Assets.img_zombie_fat.getRegionWidth() * 2,
                 getY() + Assets.font.getXHeight() * 1.5f);

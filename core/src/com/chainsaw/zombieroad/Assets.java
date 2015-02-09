@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -58,31 +58,31 @@ public class Assets {
     }
 
     public static void queue() {
-        ZombieDrive.manager.load("gfx/MainScreen.atlas", TextureAtlas.class);
-        ZombieDrive.manager.load("gfx/font.fnt", BitmapFont.class);
-        ZombieDrive.manager.load("sfx/hit_1.wav", Sound.class);
-        ZombieDrive.manager.load("sfx/hit_2.wav", Sound.class);
-        ZombieDrive.manager.load("sfx/hit_3.wav", Sound.class);
-        ZombieDrive.manager.load("sfx/hit_wrench.wav", Sound.class);
-        ZombieDrive.manager.load("sfx/skid_1.wav", Sound.class);
-        ZombieDrive.manager.load("sfx/skid_2.wav", Sound.class);
-        ZombieDrive.manager.load("sfx/crash.wav", Sound.class);
-        ZombieDrive.manager.load("sfx/ambient.mp3", Music.class);
-        ZombieDrive.manager.load("sfx/engine.wav", Music.class);
+        ZombieRoad.manager.load("gfx/MainScreen.atlas", TextureAtlas.class);
+        ZombieRoad.manager.load("gfx/font.fnt", BitmapFont.class);
+        ZombieRoad.manager.load("sfx/hit_1.wav", Sound.class);
+        ZombieRoad.manager.load("sfx/hit_2.wav", Sound.class);
+        ZombieRoad.manager.load("sfx/hit_3.wav", Sound.class);
+        ZombieRoad.manager.load("sfx/hit_wrench.wav", Sound.class);
+        ZombieRoad.manager.load("sfx/skid_1.wav", Sound.class);
+        ZombieRoad.manager.load("sfx/skid_2.wav", Sound.class);
+        ZombieRoad.manager.load("sfx/crash.wav", Sound.class);
+        ZombieRoad.manager.load("sfx/ambient.mp3", Music.class);
+        ZombieRoad.manager.load("sfx/engine.wav", Music.class);
 
 
-        ZombieDrive.manager.load("gfx/sound.png", Texture.class);
-        ZombieDrive.manager.load("gfx/mute.png", Texture.class);
-        ZombieDrive.manager.load("gfx/road.png", Texture.class);
-        ZombieDrive.manager.load("gfx/pause.png", Texture.class);
-        ZombieDrive.manager.load("gfx/play.png", Texture.class);
-        ZombieDrive.manager.load("gfx/left.png", Texture.class);
-        ZombieDrive.manager.load("gfx/right.png", Texture.class);
+        ZombieRoad.manager.load("gfx/sound.png", Texture.class);
+        ZombieRoad.manager.load("gfx/mute.png", Texture.class);
+        ZombieRoad.manager.load("gfx/road.png", Texture.class);
+        ZombieRoad.manager.load("gfx/pause.png", Texture.class);
+        ZombieRoad.manager.load("gfx/play.png", Texture.class);
+        ZombieRoad.manager.load("gfx/left.png", Texture.class);
+        ZombieRoad.manager.load("gfx/right.png", Texture.class);
 
     }
 
     public static void assign() {
-        mainTextures = ZombieDrive.manager.get("gfx/MainScreen.atlas",
+        mainTextures = ZombieRoad.manager.get("gfx/MainScreen.atlas",
                 TextureAtlas.class);
 
         img_zombie_fat = findRegion("zombie_F");
@@ -95,39 +95,39 @@ public class Assets {
         img_car_L = findRegion("car_E");
         img_headlights = findRegion("headlights");
         img_blood = findRegion("blood");
-        img_road = ZombieDrive.manager.get("gfx/road.png", Texture.class);
+        img_road = ZombieRoad.manager.get("gfx/road.png", Texture.class);
         img_exit_sign = findRegion("exit_sign");
 
-        img_sound_off = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/mute.png", Texture.class)));
-        img_sound_on = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/sound.png", Texture.class)));
-        img_pause = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/pause.png", Texture.class)));
-        img_play = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/play.png", Texture.class)));
+        img_sound_off = new TextureRegionDrawable(new TextureRegion(ZombieRoad.manager.get("gfx/mute.png", Texture.class)));
+        img_sound_on = new TextureRegionDrawable(new TextureRegion(ZombieRoad.manager.get("gfx/sound.png", Texture.class)));
+        img_pause = new TextureRegionDrawable(new TextureRegion(ZombieRoad.manager.get("gfx/pause.png", Texture.class)));
+        img_play = new TextureRegionDrawable(new TextureRegion(ZombieRoad.manager.get("gfx/play.png", Texture.class)));
 
-        img_left = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/left.png", Texture.class)));
-        img_right = new TextureRegionDrawable(new TextureRegion(ZombieDrive.manager.get("gfx/right.png", Texture.class)));
+        img_left = new TextureRegionDrawable(new TextureRegion(ZombieRoad.manager.get("gfx/left.png", Texture.class)));
+        img_right = new TextureRegionDrawable(new TextureRegion(ZombieRoad.manager.get("gfx/right.png", Texture.class)));
 
         dark = new TextureRegion(img_headlights, img_headlights.getRegionWidth() - 2, img_headlights.getRegionHeight() - 2, 1, 1);
 
-        font = ZombieDrive.manager.get("gfx/font.fnt", BitmapFont.class);
+        font = ZombieRoad.manager.get("gfx/font.fnt", BitmapFont.class);
 
-        hit_zombie_fat = ZombieDrive.manager.get("sfx/hit_1.wav", Sound.class);
-        hit_zombie_female = ZombieDrive.manager.get("sfx/hit_2.wav",
+        hit_zombie_fat = ZombieRoad.manager.get("sfx/hit_1.wav", Sound.class);
+        hit_zombie_female = ZombieRoad.manager.get("sfx/hit_2.wav",
                 Sound.class);
-        hit_zombie_normal = ZombieDrive.manager.get("sfx/hit_3.wav",
+        hit_zombie_normal = ZombieRoad.manager.get("sfx/hit_3.wav",
                 Sound.class);
-        hit_zombie_wrench = ZombieDrive.manager.get("sfx/hit_wrench.wav",
+        hit_zombie_wrench = ZombieRoad.manager.get("sfx/hit_wrench.wav",
                 Sound.class);
 
-        skid_1 = ZombieDrive.manager.get("sfx/skid_1.wav", Sound.class);
-        skid_2 = ZombieDrive.manager.get("sfx/skid_2.wav", Sound.class);
+        skid_1 = ZombieRoad.manager.get("sfx/skid_1.wav", Sound.class);
+        skid_2 = ZombieRoad.manager.get("sfx/skid_2.wav", Sound.class);
 
-        explode = ZombieDrive.manager.get("sfx/crash.wav", Sound.class);
+        explode = ZombieRoad.manager.get("sfx/crash.wav", Sound.class);
 
-        ambientMusic = ZombieDrive.manager.get("sfx/ambient.mp3", Music.class);
+        ambientMusic = ZombieRoad.manager.get("sfx/ambient.mp3", Music.class);
         ambientMusic.setLooping(true);
         ambientMusic.setVolume(0f);
 
-        engineSound = ZombieDrive.manager.get("sfx/engine.wav", Music.class);
+        engineSound = ZombieRoad.manager.get("sfx/engine.wav", Music.class);
         engineSound.setLooping(true);
         engineSound.setVolume(0.5f);
 
@@ -149,7 +149,7 @@ public class Assets {
     }
 
     public static void destroy() {
-        ZombieDrive.manager.dispose();
+        ZombieRoad.manager.dispose();
     }
 
 }

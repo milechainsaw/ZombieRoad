@@ -1,4 +1,4 @@
-package com.chainsaw.zombiedrive;
+package com.chainsaw.zombieroad;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,8 +27,8 @@ public class Car extends Actor {
         carImg = Assets.img_car_H;
         headlightsImg = Assets.img_headlights;
         wrecked = false;
-        setPosition((ZombieDrive.WIDTH / 2) - (width / 2),
-                ZombieDrive.HEIGHT / 7);
+        setPosition((ZombieRoad.WIDTH / 2) - (width / 2),
+                ZombieRoad.HEIGHT / 7);
         Gameplay.carX = getX();
         setWidth(width);
         setHeight(height);
@@ -41,17 +41,21 @@ public class Car extends Actor {
 
 
     public void moveLeft() {
-        skid();
-        movingRight = false;
-        movingLeft = true;
-        this.setRotation(2f);
+        if (!Gameplay.gamePaused) {
+            skid();
+            movingRight = false;
+            movingLeft = true;
+            this.setRotation(2f);
+        }
     }
 
     public void moveRight() {
-        skid();
-        movingLeft = false;
-        movingRight = true;
-        this.setRotation(-2);
+        if (!Gameplay.gamePaused) {
+            skid();
+            movingLeft = false;
+            movingRight = true;
+            this.setRotation(-2);
+        }
     }
 
     public void stop() {
@@ -85,16 +89,16 @@ public class Car extends Actor {
             if (this.getX() < 0) {
                 this.setX(0);
             }
-            if (this.getX() > ZombieDrive.WIDTH - width) {
-                this.setX(ZombieDrive.WIDTH - width);
+            if (this.getX() > ZombieRoad.WIDTH - width) {
+                this.setX(ZombieRoad.WIDTH - width);
             }
 
             if (movingRight) {
-                this.setX((float) (this.getX() + (ZombieDrive.GAME_SPEED
+                this.setX((float) (this.getX() + (ZombieRoad.GAME_SPEED
                         * Gameplay.level / 2)));
             }
             if (movingLeft) {
-                this.setX((float) (this.getX() - (ZombieDrive.GAME_SPEED
+                this.setX((float) (this.getX() - (ZombieRoad.GAME_SPEED
                         * Gameplay.level / 2)));
             }
 
@@ -118,7 +122,7 @@ public class Car extends Actor {
         } else {
             batch.setColor(1f, 1f, 1f, 1f);
             setZIndex(14);
-            batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
+            batch.draw(Assets.dark, 0, 0, ZombieRoad.WIDTH, ZombieRoad.HEIGHT);
         }
 
         if (smoking) smoke.draw(batch);
@@ -165,7 +169,7 @@ public class Car extends Actor {
 
     public void repair() {
         if (!Assets.isMuted)
-            Assets.hit_zombie_wrench.play();
+            Assets.hit_zombie_wrench.play(ZombieRoad.wrenchVolume);
         health = 100;
         this.hit(0);
     }
