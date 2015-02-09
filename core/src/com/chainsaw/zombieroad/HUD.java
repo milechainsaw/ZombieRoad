@@ -57,6 +57,7 @@ public class HUD extends Actor {
             if (Gameplay.gamePaused) {
                 Assets.font.setColor(1f, 0.2f, 0.2f, 1f);
                 batch.setColor(1, 1, 1, 1);
+                Assets.font.setScale(1);
                 Assets.font.draw(batch, pauseMessage, (ZombieRoad.WIDTH / 2) - (pauseBounds.width / 2), (ZombieRoad.HEIGHT / 2) - (pauseBounds.height));
             }
 
@@ -72,6 +73,7 @@ public class HUD extends Actor {
         if ((TimeUtils.nanoTime() - messageStartTime) < 5000000000l) {
             Assets.font.setColor(1f, 0.2f, 0.2f, 1f);
             BitmapFont.TextBounds bounds = Assets.font.getBounds(mMessage);
+            Assets.font.setScale(1);
             Assets.font.draw(batch, mMessage, (ZombieRoad.WIDTH / 2) - (bounds.width / 2), (ZombieRoad.HEIGHT / 2) - (bounds.height));
         } else {
             messageStartTime = 0;

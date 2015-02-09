@@ -24,6 +24,7 @@ public class ScoreActorFat extends Actor {
         Assets.font.setColor(Color.WHITE);
         batch.setColor(1, 1, 1, 1);
         batch.draw(Assets.img_zombie_fat, getX(), getY());
+        Assets.font.setScale(1);
         Assets.font.draw(batch, "x " + String.valueOf(Gameplay.killCount_F), getX() + Assets.img_zombie_fat.getRegionWidth() * 2,
                 getY() + Assets.font.getXHeight() * 1.5f);
 

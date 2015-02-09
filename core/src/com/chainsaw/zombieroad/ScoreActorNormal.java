@@ -26,6 +26,7 @@ public class ScoreActorNormal extends Actor {
         //Little zombie Images on the top
         Assets.font.setColor(Color.WHITE);
         batch.setColor(1, 1, 1, 1);
+        Assets.font.setScale(1);
         batch.draw(Assets.img_zombie_normal, getX(), getY());
         Assets.font.draw(batch, "x " + String.valueOf(Gameplay.killCount_N), getX() + Assets.img_zombie_fat.getRegionWidth() * 2,
                 getY() + Assets.font.getXHeight() * 1.5f);

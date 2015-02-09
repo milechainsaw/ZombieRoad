@@ -198,7 +198,6 @@ public class Zombie extends Actor implements Poolable {
 
     @Override
     public void reset() {
-        // TODO Auto-generated method stub
         dead = false;
 
     }

@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -37,7 +36,6 @@ public class MainScreen implements Screen {
     private Rectangle carRect;
     private Rectangle zombiRect;
     private float spawnTime;
-    private TextButtonStyle btnStyleMute;
     private Pool<Zombie> pool = new Pool<Zombie>() {
 
         @Override
@@ -52,11 +50,6 @@ public class MainScreen implements Screen {
     public MainScreen(Game game) {
         Gameplay.resetScore();
 
-        btnStyleMute = new TextButtonStyle();
-        btnStyleMute.font = Assets.font;
-
-
-        //TODO SET GAME LEVEL
         Gameplay.level = 2f;
         Gameplay.setSpawnWrench(false);
 
@@ -115,10 +108,6 @@ public class MainScreen implements Screen {
 
 
             if (car.wrecked) {
-                //
-                // TODO GAME OLIVER
-                //
-                // hud.remove();
                 removeAllButtons();
                 Gameplay.totalMileage += Gameplay.getDistance();
                 hud.addAction(Actions.sequence(Actions.delay(3f), Actions.run(new Runnable() {
@@ -198,7 +187,6 @@ public class MainScreen implements Screen {
                             hud.drawMessageText = true;
                             car.repair();
 
-                            //TODO Set speedup factor
                             Gameplay.level += 0.2;
                             Gameplay.setSpawnWrench(false);
                             Gameplay.wrenchOnScreen = false;
@@ -368,7 +356,6 @@ public class MainScreen implements Screen {
     }
 
     private void newGame() {
-        //TODO new Game!!!!
         Gameplay.resetScore();
         game.setScreen(new LoadingScreen(game));
     }

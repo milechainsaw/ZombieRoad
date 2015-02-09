@@ -65,7 +65,6 @@ public class Assets {
         ZombieRoad.manager.load("sfx/skid_1.wav", Sound.class);
         ZombieRoad.manager.load("sfx/skid_2.wav", Sound.class);
         ZombieRoad.manager.load("sfx/crash.wav", Sound.class);
-        ZombieRoad.manager.load("sfx/ambient.mp3", Music.class);
         ZombieRoad.manager.load("sfx/engine.wav", Music.class);
 
 

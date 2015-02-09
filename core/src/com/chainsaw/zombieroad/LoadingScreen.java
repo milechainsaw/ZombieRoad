@@ -171,7 +171,9 @@ public class LoadingScreen implements Screen {
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
+            Assets.font.setScale(2);
             Assets.font.drawMultiLine(batch, explainerText, getX(), getY() + bounds.height);
+            Assets.font.setScale(1);
             super.draw(batch, parentAlpha);
         }
     }

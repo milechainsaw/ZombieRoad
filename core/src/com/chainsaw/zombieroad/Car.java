@@ -23,7 +23,7 @@ public class Car extends Actor {
     private boolean movingRight;
 
     public Car() {
-        health = 10; // TODO adjust this!
+        health = 100;
         carImg = Assets.img_car_H;
         headlightsImg = Assets.img_headlights;
         wrecked = false;

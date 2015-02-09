@@ -23,6 +23,7 @@ public class ScoreActorMileage extends Actor {
         //Little zombie Images on the top
         Assets.font.setColor(Color.WHITE);
         batch.setColor(1, 1, 1, 1);
+        Assets.font.setScale(1);
         Assets.font.draw(batch, "Distance traveled: ", getX(),
                 getY() + Assets.font.getXHeight() * 1.5f);
         Assets.font.draw(batch, String.valueOf((int) (Gameplay.totalMileage / 1000)) + " miles", getX(), getY());
