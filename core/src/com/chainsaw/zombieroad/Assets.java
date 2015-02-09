@@ -37,7 +37,6 @@ public class Assets {
 
     public static TextureRegion img_exit_sign;
 
-    public static Texture img_mainmenu;
     public static Sound hit_zombie_fat;
     public static Sound hit_zombie_female;
     public static Sound hit_zombie_normal;
@@ -46,7 +45,6 @@ public class Assets {
     public static Sound skid_2;
     public static Sound explode;
     public static BitmapFont font;
-    public static Music ambientMusic;
     public static Music engineSound;
 
 
@@ -123,10 +121,6 @@ public class Assets {
 
         explode = ZombieRoad.manager.get("sfx/crash.wav", Sound.class);
 
-        ambientMusic = ZombieRoad.manager.get("sfx/ambient.mp3", Music.class);
-        ambientMusic.setLooping(true);
-        ambientMusic.setVolume(0f);
-
         engineSound = ZombieRoad.manager.get("sfx/engine.wav", Music.class);
         engineSound.setLooping(true);
         engineSound.setVolume(0.5f);
@@ -137,13 +131,11 @@ public class Assets {
     }
 
     public static void mute() {
-        ambientMusic.setVolume(0);
         engineSound.setVolume(0);
         isMuted = true;
     }
 
     public static void unMute() {
-        ambientMusic.setVolume(0f);
         engineSound.setVolume(0.5f);
         isMuted = false;
     }

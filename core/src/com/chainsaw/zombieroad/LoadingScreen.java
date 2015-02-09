@@ -6,8 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -83,6 +86,7 @@ public class LoadingScreen implements Screen {
     private void displayTapInfo() {
         if (!tapInfoDisplayed) {
             stage.addActor(taptoplaytext);
+            stage.addActor(new ExplainerText(50, ZombieRoad.HEIGHT / 2));
         }
         tapInfoDisplayed = true;
     }
@@ -99,14 +103,14 @@ public class LoadingScreen implements Screen {
         logo.setY(10);
         logo.setScale(0.5f);
         loadingFrame.setX((stage.getWidth() - loadingFrame.getWidth()) / 2);
-        loadingFrame.setY((stage.getHeight() - loadingFrame.getHeight()) / 2);
+        loadingFrame.setY(((stage.getHeight() - loadingFrame.getHeight()) / 2) + 100);
 
         zombie.setSize(ZombieRoad.WIDTH / 2, ZombieRoad.HEIGHT / 2);
-        zombie.setPosition(stage.getWidth() / 2 - zombie.getWidth() / 2f, 300 + stage.getHeight() / 2 - zombie.getHeight() / 2);
+        zombie.setPosition(stage.getWidth() / 2 - zombie.getWidth() / 2f, 450 + stage.getHeight() / 2 - zombie.getHeight() / 2);
 
         taptoplaytext.setWidth(taptoplaytext.getWidth() * 2);
         taptoplaytext.setHeight(taptoplaytext.getHeight() * 2);
-        taptoplaytext.setPosition(stage.getWidth() / 2 - taptoplaytext.getWidth() / 2, stage.getHeight() / 2 - taptoplaytext.getHeight() * 2f);
+        taptoplaytext.setPosition(stage.getWidth() / 2 - taptoplaytext.getWidth() / 2, (stage.getHeight() / 2 - taptoplaytext.getHeight() * 2f) + 150);
 
         loadingBar.setX(loadingFrame.getX() + 15);
         loadingBar.setY(loadingFrame.getY() + 5);
@@ -135,27 +139,40 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
         ZombieRoad.manager.unload("data/loading.pack");
 
     }
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
         stage.dispose();
     }
 
+    private class ExplainerText extends Actor {
+        String explainerText = "Run over the Zombies \nuntil your damage is critical.\nRepair and repeat.";
+        BitmapFont.TextBounds bounds;
+
+        ExplainerText(float x, float y) {
+            setX(x);
+            setY(y);
+            Assets.font.setScale(2);
+            bounds = Assets.font.getBounds(explainerText);
+        }
+
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            Assets.font.drawMultiLine(batch, explainerText, getX(), getY() + bounds.height);
+            super.draw(batch, parentAlpha);
+        }
+    }
 }

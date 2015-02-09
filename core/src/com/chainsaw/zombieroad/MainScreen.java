@@ -84,7 +84,6 @@ public class MainScreen implements Screen {
         carRect = new Rectangle();
         zombiRect = new Rectangle();
 
-        Assets.ambientMusic.play();
         Assets.engineSound.play();
         setUpMuteButton(stage);
         setUpPlayPause(stage);
