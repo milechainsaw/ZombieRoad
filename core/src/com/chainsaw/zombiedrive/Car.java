@@ -50,12 +50,14 @@ public class Car extends Actor {
         skid();
         movingRight = false;
         movingLeft = true;
+        this.setRotation(2f);
     }
 
     public void moveRight() {
         skid();
         movingLeft = false;
         movingRight = true;
+        this.setRotation(-2);
     }
 
     public void stop() {
@@ -65,21 +67,22 @@ public class Car extends Actor {
     }
 
     private void skid() {
-        switch (MathUtils.random(0, 10)) {
-            case 0:
-            case 1:
-            case 2:
-                Assets.skid_1.play(0.1f);
-                break;
-            case 3:
-            case 4:
-            case 5:
-                Assets.skid_2.play(0.1f);
-                break;
-            default:
-                break;
+        if (!Assets.isMuted)
+            switch (MathUtils.random(0, 10)) {
+                case 0:
+                case 1:
+                case 2:
+                    Assets.skid_1.play(0.1f);
+                    break;
+                case 3:
+                case 4:
+                case 5:
+                    Assets.skid_2.play(0.1f);
+                    break;
+                default:
+                    break;
 
-        }
+            }
 
 
     }
@@ -97,12 +100,10 @@ public class Car extends Actor {
         if (movingRight) {
             this.setX((float) (this.getX() + (ZombieDrive.GAME_SPEED
                     * Gameplay.level / 2)));
-            this.setRotation(-2);
         }
         if (movingLeft) {
             this.setX((float) (this.getX() - (ZombieDrive.GAME_SPEED
                     * Gameplay.level / 2)));
-            this.setRotation(2f);
         }
 
         smoke.x = (int) (getX() + width / 2);
@@ -133,7 +134,8 @@ public class Car extends Actor {
             setColor(1f, 1f, 1f, 1f);
             batch.draw(this.carImg, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         } else {
-            setColor(1f, 1f, 1f, 1f);
+            batch.setColor(1f, 1f, 1f, 1f);
+            setZIndex(14);
             batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
         }
 //        if (Gameplay.gamePaused && !wrecked) {
