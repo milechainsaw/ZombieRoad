@@ -14,12 +14,10 @@ public class HUD extends Actor {
     private static int height = ZombieDrive.HEIGHT / 25;
     private final int wrenchY = ZombieDrive.HEIGHT
             - Assets.img_zombie_wrench.getRegionHeight();
-    private final int exitY = ZombieDrive.HEIGHT
-            - Assets.img_exit_sign.getRegionHeight();
 
-    boolean drawMessageText = true;
+    boolean drawMessageText = false;
     private long messageStartTime = 0;
-    private String mMessage = "ZOMBIE";
+    private String mMessage = "";
 
     private Texture hudTexture;
     private Pixmap pixmapBar;
@@ -64,7 +62,7 @@ public class HUD extends Actor {
         if ((TimeUtils.nanoTime() - messageStartTime) < 5000000000l) {
             Assets.font.setColor(1f, 0.2f, 0.2f, 1f);
             BitmapFont.TextBounds bounds = Assets.font.getBounds(mMessage);
-            Assets.font.draw(batch, mMessage, (ZombieDrive.WIDTH / 2) - (bounds.width / 2), (ZombieDrive.HEIGHT / 2) - (bounds.height / 2));
+            Assets.font.draw(batch, mMessage, (ZombieDrive.WIDTH / 2) - (bounds.width / 2), (ZombieDrive.HEIGHT / 2) - (bounds.height));
         } else {
             messageStartTime = 0;
             drawMessageText = false;
@@ -74,34 +72,6 @@ public class HUD extends Actor {
     void setMessage(String text) {
         mMessage = text;
     }
-
-    // private void drawScore(SpriteBatch batch) {
-
-    //
-    // Little zombie Images on the top
-    //
-
-    // Assets.font.setColor(Color.WHITE);
-    // batch.draw(Assets.img_zombie_normal, 5, ZombieDrive.HEIGHT -
-    // iconHeight);
-    // Assets.font.draw(batch, "x " + String.valueOf(Gameplay.killCount_N)
-    // + String.valueOf(Gdx.graphics.getFramesPerSecond()), scorePosX,
-    // ZombieDrive.HEIGHT - iconHeight + scoreHeight);
-    //
-    // batch.draw(Assets.img_zombie_fat, 5, ZombieDrive.HEIGHT
-    // - (iconHeight * 2));
-    // Assets.font.draw(batch, "x " + String.valueOf(Gameplay.killCount_F),
-    // scorePosX, ZombieDrive.HEIGHT - (iconHeight * 2) + scoreHeight);
-    //
-    // batch.draw(Assets.img_zombie_female, 5, ZombieDrive.HEIGHT
-    // - (iconHeight * 3));
-    // Assets.font.draw(batch, "x " + String.valueOf(Gameplay.killCount_W),
-    // scorePosX, ZombieDrive.HEIGHT - (iconHeight * 3) + scoreHeight);
-    //
-    // Assets.font.draw(batch, prepActionString(health), 10, height
-    // + Assets.font.getLineHeight());
-
-    // }
 
     private void prepareTexture() {
         // Background Color
@@ -144,8 +114,4 @@ public class HUD extends Actor {
 
     }
 
-    public void destroy() {
-        pixmapBar.dispose();
-        hudTexture.dispose();
-    }
 }

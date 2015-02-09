@@ -38,7 +38,4 @@ public class Road extends Actor {
         batch.enableBlending();
     }
 
-    public void destroy() {
-
-    }
 }

@@ -26,7 +26,6 @@ public class MainScreen implements Screen {
     public Game game;
     public Stage stage;
     public Road road;
-    public Zombie zombie;
     public Car car;
     //buttons
     Button muteButton;
@@ -38,7 +37,6 @@ public class MainScreen implements Screen {
     private Rectangle carRect;
     private Rectangle zombiRect;
     private float spawnTime;
-    private Stage menuStage;
     private TextButtonStyle btnStyleMute;
     private Pool<Zombie> pool = new Pool<Zombie>() {
 
@@ -48,6 +46,7 @@ public class MainScreen implements Screen {
         }
     };
     private float buttonsAlpha = 0.4f;
+    private boolean mTouchToReset;
 
 
     public MainScreen(Game game) {
@@ -104,14 +103,15 @@ public class MainScreen implements Screen {
             stage.act(Gdx.graphics.getDeltaTime());
         }
 
+        if (mTouchToReset && Gdx.input.isTouched()) {
+            newGame();
+        }
+
         if (!Gameplay.gamePaused) {
             stage.act(Gdx.graphics.getDeltaTime());
             testCollision();
             playZombies();
 
-//            if (Gdx.input.isTouched()) {
-//                car.move(Gdx.input.getX() * ZombieDrive.ScaleWidht);
-//            }
 
             if (car.wrecked) {
                 //
@@ -158,6 +158,7 @@ public class MainScreen implements Screen {
                                 ScoreActorMileage scoreActorMileage = new ScoreActorMileage();
                                 scoreActorMileage.setPosition(70, scoreActorWoman.getY() - Assets.img_zombie_female.getRegionHeight() * 1.2f);
                                 stage.addActor(scoreActorMileage);
+                                mTouchToReset = true;
                             }
                         })));
                         stage.addActor(scoreActorWoman);
@@ -204,14 +205,6 @@ public class MainScreen implements Screen {
                             pool.free(entity);
                             zombies.remove(i);
 
-//                    } else if (entity.kindOfZombie == Zombie.ZOMBIE_EXIT) {
-//
-//                        // END OF LEVEL
-//                        //
-//                        //
-//                        Gameplay.totalMileage += Gameplay.getDistance();
-//                        Gameplay.resetScore();
-//                        game.setScreen(new LoadingScreen(game));
 
                         } else {
                             car.hit(entity.hitpoints);

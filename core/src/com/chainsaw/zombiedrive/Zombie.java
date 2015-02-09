@@ -15,7 +15,6 @@ public class Zombie extends Actor implements Poolable {
     public static final int ZOMBIE_FEMALE = 1;
     public static final int ZOMBIE_FAT = 2;
     public static final int ZOMBIE_WRENCH = 3;
-    //    public static final int ZOMBIE_EXIT = 4;
     public static final int hitpointsFat = 10;
     public static final int hitpointsFemale = 15;
     public static final int hitpointsNormal = 5;
@@ -92,8 +91,7 @@ public class Zombie extends Actor implements Poolable {
     public void draw(Batch batch, float parentAlpha) {
 
         if (getY() > 0) {
-            if (!dead && kindOfZombie != Zombie.ZOMBIE_WRENCH) {
-//                    && kindOfZombie != Zombie.ZOMBIE_EXIT) {
+            if (!dead && kindOfZombie != Zombie.ZOMBIE_WRENCH && !Gameplay.carWrecked) {
                 if (getY() > ZombieDrive.HEIGHT / 7 + Car.height) {
                     setZIndex(2);
                     calcShadowParams(getX(), getY());

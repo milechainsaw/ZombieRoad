@@ -25,7 +25,5 @@ public class ScoreActorMileage extends Actor {
         Assets.font.draw(batch, "Distance traveled: ", getX(),
                 getY() + Assets.font.getXHeight() * 1.5f);
         Assets.font.draw(batch, String.valueOf((int) (Gameplay.totalMileage / 1000)) + " miles", getX(), getY());
-
     }
-
 }

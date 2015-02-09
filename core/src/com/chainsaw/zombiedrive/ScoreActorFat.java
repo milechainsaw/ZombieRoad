@@ -17,12 +17,10 @@ public class ScoreActorFat extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         setZIndex(99);
         drawScore(batch);
-        // super.draw(batch, parentAlpha);
     }
 
 
     private void drawScore(Batch batch) {
-        //Little zombie Images on the top
         Assets.font.setColor(Color.WHITE);
         batch.draw(Assets.img_zombie_fat, getX(), getY());
         Assets.font.draw(batch, "x " + String.valueOf(Gameplay.killCount_F), getX() + Assets.img_zombie_fat.getRegionWidth() * 2,

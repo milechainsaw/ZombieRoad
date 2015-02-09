@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
@@ -13,21 +14,45 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class LoadingScreen implements Screen {
 
+
+    private final Image taptoplaytext;
     private Game game;
     private Stage stage;
-
     private Image logo;
     private Image loadingFrame;
     private Image loadingBarHidden;
     private Image screenBg;
     private Image loadingBg;
+    private Image zombie;
     private LoadingBar loadingBar;
-
     private float startX, endX;
     private float percent;
+    private boolean tapInfoDisplayed = false;
 
     public LoadingScreen(Game g) {
         this.game = g;
+        ZombieDrive.manager.load("data/loading.pack", TextureAtlas.class);
+        ZombieDrive.manager.load("gfx/zombie.png", Texture.class);
+        ZombieDrive.manager.load("gfx/taptoplay.png", Texture.class);
+        ZombieDrive.manager.finishLoading();
+
+        stage = new Stage(new StretchViewport(ZombieDrive.WIDTH * 2, ZombieDrive.HEIGHT * 2));
+
+        TextureAtlas atlas = ZombieDrive.manager.get("data/loading.pack",
+                TextureAtlas.class);
+        zombie = new Image(ZombieDrive.manager.get("gfx/zombie.png", Texture.class));
+        taptoplaytext = new Image(ZombieDrive.manager.get("gfx/taptoplay.png", Texture.class));
+
+        logo = new Image(atlas.findRegion("libgdx-logo"));
+        loadingFrame = new Image(atlas.findRegion("loading-frame"));
+        loadingBarHidden = new Image(atlas.findRegion("loading-bar-hidden"));
+        screenBg = new Image(atlas.findRegion("screen-bg"));
+        loadingBg = new Image(atlas.findRegion("loading-frame-bg"));
+
+        Animation anim = new Animation(0.05f,
+                atlas.findRegions("loading-bar-anim"));
+        anim.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
+        loadingBar = new LoadingBar(anim);
     }
 
     @Override
@@ -36,7 +61,7 @@ public class LoadingScreen implements Screen {
 
         if (ZombieDrive.manager.update()) {
             Assets.assign();
-
+            displayTapInfo();
             if (Gdx.input.isTouched()) {
                 game.setScreen(new MainScreen(game));
             }
@@ -55,6 +80,13 @@ public class LoadingScreen implements Screen {
 
     }
 
+    private void displayTapInfo() {
+        if (!tapInfoDisplayed) {
+            stage.addActor(taptoplaytext);
+        }
+        tapInfoDisplayed = true;
+    }
+
     @Override
     public void resize(int width, int height) {
         // stage.setViewport(ZombieDrive.WIDTH, ZombieDrive.HEIGHT, true);
@@ -62,33 +94,19 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void show() {
-
-        ZombieDrive.manager.load("data/loading.pack", TextureAtlas.class);
-        ZombieDrive.manager.finishLoading();
-
-        stage = new Stage(new StretchViewport(ZombieDrive.WIDTH, ZombieDrive.HEIGHT));
-
-        TextureAtlas atlas = ZombieDrive.manager.get("data/loading.pack",
-                TextureAtlas.class);
-
-        logo = new Image(atlas.findRegion("libgdx-logo"));
-        loadingFrame = new Image(atlas.findRegion("loading-frame"));
-        loadingBarHidden = new Image(atlas.findRegion("loading-bar-hidden"));
-        screenBg = new Image(atlas.findRegion("screen-bg"));
-        loadingBg = new Image(atlas.findRegion("loading-frame-bg"));
-
-        Animation anim = new Animation(0.05f,
-                atlas.findRegions("loading-bar-anim"));
-        anim.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
-        loadingBar = new LoadingBar(anim);
-
-        screenBg.setSize(ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
-
-        logo.setX((ZombieDrive.WIDTH - logo.getWidth()) / 2);
-        logo.setY((ZombieDrive.HEIGHT - logo.getHeight()) / 2 + 100);
-
+        screenBg.setSize(ZombieDrive.WIDTH * 2, ZombieDrive.HEIGHT * 2);
+        logo.setX(10);
+        logo.setY(10);
+        logo.setScale(0.5f);
         loadingFrame.setX((stage.getWidth() - loadingFrame.getWidth()) / 2);
         loadingFrame.setY((stage.getHeight() - loadingFrame.getHeight()) / 2);
+
+        zombie.setSize(ZombieDrive.WIDTH / 2, ZombieDrive.HEIGHT / 2);
+        zombie.setPosition(stage.getWidth() / 2 - zombie.getWidth() / 2f, 300 + stage.getHeight() / 2 - zombie.getHeight() / 2);
+
+        taptoplaytext.setWidth(taptoplaytext.getWidth() * 2);
+        taptoplaytext.setHeight(taptoplaytext.getHeight() * 2);
+        taptoplaytext.setPosition(stage.getWidth() / 2 - taptoplaytext.getWidth() / 2, stage.getHeight() / 2 - taptoplaytext.getHeight() * 2f);
 
         loadingBar.setX(loadingFrame.getX() + 15);
         loadingBar.setY(loadingFrame.getY() + 5);
@@ -109,6 +127,7 @@ public class LoadingScreen implements Screen {
         stage.addActor(loadingBarHidden);
         stage.addActor(loadingFrame);
         stage.addActor(logo);
+        stage.addActor(zombie);
 
         Assets.queue();
 

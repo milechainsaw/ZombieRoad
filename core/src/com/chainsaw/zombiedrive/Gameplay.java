@@ -9,16 +9,13 @@ final public class Gameplay {
     public static int killCount_N;
     public static int killCount_F;
     public static int killCount_W;
-    public static int wrenchTime;
     public static float level;
     public static boolean gamePaused = false;
     public static boolean wrenchOnScreen = false;
     public static float totalMileage;
-    public static float exitMileage;
     public static float carX;
-    public static int carHealth;
     public static boolean gameOver;
-    static int exitThreshold = 60;
+    public static boolean carWrecked = false;
     private static int zombieCount;
     private static int wZombieCount;
     private static int wrenchX;
@@ -31,14 +28,15 @@ final public class Gameplay {
 
     public static void resetScore() {
         gameOver = false;
+        gamePaused = false;
+        carWrecked = false;
         score = 0;
         killCount_F = 0;
         killCount_N = 0;
         killCount_W = 0;
         zombieCount = 0;
         mileage = 0;
-        exitMileage = 0;
-//        spawnExit = false;
+        totalMileage = 0;
     }
 
     public static int getWrenchX() {
@@ -90,53 +88,21 @@ final public class Gameplay {
             zombieCount = 0;
         }
 
-
-        /*
-        Old zombie selection logic
-
-        if (zombieCount < 14) {
-            type = Zombie.ZOMBIE_NORMAL;
-        } else {
-            if (zombieCount < 21) {
-                type = Zombie.ZOMBIE_FAT;
-            } else {
-                type = Zombie.ZOMBIE_FEMALE;
-            }
-        }
-
-        if (zombieCount > 28) {
-            zombieCount = 0;
-        }*/
-
         if (wZombieCount == 0) {
             type = Zombie.ZOMBIE_WRENCH;
             wZombieCount--;
         }
-
-        //TODO EXIT strategy
-//        if (Gameplay.exitMileage > exitThreshold && !Gameplay.exitOnScreen) {
-//            type = Zombie.ZOMBIE_EXIT;
-//        }
 
         return type;
     }
 
     public static void addDistance(float delta) {
         mileage += delta;
-        exitMileage += delta;
     }
 
     public static int getDistance() {
         return (int) mileage;
     }
 
-    public static int getExitX() {
-        return exitX;
-    }
-
-    public static void setExitX() {
-        exitX = MathUtils.random(0,
-                ZombieDrive.WIDTH - Assets.img_exit_sign.getRegionWidth());
-    }
 
 }
