@@ -4,10 +4,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -26,12 +28,16 @@ public class MainScreen implements Screen {
     public Road road;
     public Zombie zombie;
     public Car car;
+    //buttons
+    Button muteButton;
+    Button playButton;
+    Button leftButton;
+    Button rightButton;
     private HUD hud;
     private BloodParticleActor particles;
     private Rectangle carRect;
     private Rectangle zombiRect;
     private float spawnTime;
-
     private Stage menuStage;
     private TextButtonStyle btnStyleMute;
     private Pool<Zombie> pool = new Pool<Zombie>() {
@@ -41,6 +47,7 @@ public class MainScreen implements Screen {
             return new Zombie();
         }
     };
+
 
     public MainScreen(Game game) {
         btnStyleMute = new TextButtonStyle();
@@ -66,6 +73,7 @@ public class MainScreen implements Screen {
         stage.addActor(car);
         stage.addActor(hud);
         stage.addActor(particles);
+        setUpSteering(stage);
 
         Gdx.input.setCatchMenuKey(true);
         Gdx.input.setCatchBackKey(false);
@@ -74,10 +82,6 @@ public class MainScreen implements Screen {
         spawnTime = TimeUtils.nanoTime();
         carRect = new Rectangle();
         zombiRect = new Rectangle();
-
-
-        setUpSteering(stage);
-
 
         Assets.ambientMusic.play();
         Assets.engineSound.play();
@@ -94,6 +98,9 @@ public class MainScreen implements Screen {
             spawnTime = TimeUtils.nanoTime();   // Need this to wait for next spawn after pause
         }
 
+        if (Gameplay.gameOver) {
+            stage.act(Gdx.graphics.getDeltaTime());
+        }
 
         if (!Gameplay.gamePaused) {
             stage.act(Gdx.graphics.getDeltaTime());
@@ -108,51 +115,92 @@ public class MainScreen implements Screen {
                 //
                 // TODO GAME OLIVER
                 //
-                hud.remove();
+                // hud.remove();
+                removeAllButtons();
                 Gameplay.totalMileage += Gameplay.getDistance();
-                Gameplay.gameOver = true;
-                Gameplay.gamePaused = true;
-
+                hud.addAction(Actions.sequence(Actions.delay(3f), Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!Gameplay.gameOver) drawScore();
+                        Gameplay.gameOver = true;
+                        Gameplay.gamePaused = true;
+                    }
+                })));
             }
-
         }
 
     }
 
-    private void testCollision() {
+    private void drawScore() {
 
-        for (int i = 0; i < zombies.size(); i++) {
+        final ScoreActorNormal scoreActorNormal = new ScoreActorNormal();
+
+        int y = ZombieDrive.HEIGHT / 2 + ZombieDrive.HEIGHT / 4;
+        scoreActorNormal.setPosition(70, y);
+
+        final float delay = 1f;
+        scoreActorNormal.addAction(Actions.sequence(Actions.delay(delay), Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                final ScoreActorFat scoreActorFat = new ScoreActorFat();
+                scoreActorFat.setPosition(70, scoreActorNormal.getY() - Assets.img_zombie_female.getRegionHeight() * 1.2f);
+                stage.addActor(scoreActorFat);
+                scoreActorFat.addAction(Actions.sequence(Actions.delay(delay), Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        final ScoreActorWoman scoreActorWoman = new ScoreActorWoman();
+                        scoreActorWoman.setPosition(70, scoreActorFat.getY() - Assets.img_zombie_female.getRegionHeight() * 1.2f);
+                        scoreActorWoman.addAction(Actions.sequence(Actions.delay(delay), Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                ScoreActorMileage scoreActorMileage = new ScoreActorMileage();
+                                scoreActorMileage.setPosition(70, scoreActorWoman.getY() - Assets.img_zombie_female.getRegionHeight() * 1.2f);
+                                stage.addActor(scoreActorMileage);
+                            }
+                        })));
+                        stage.addActor(scoreActorWoman);
+                    }
+                })));
+
+            }
+        })));
+        stage.addActor(scoreActorNormal);
+    }
+
+    private void testCollision() {
+        if (!car.wrecked) {
+            for (int i = 0; i < zombies.size(); i++) {
             /*
              * First check if Zombie is in hit range
 			 */
-            Zombie entity = zombies.get(i);
-            if ((entity.getY() < car.getY() + car.getHeight())
-                    && (!(entity.getY() + entity.getHeight() < car.getY()
-                    + (car.getHeight() * 0.9)))) {
+                Zombie entity = zombies.get(i);
+                if ((entity.getY() < car.getY() + car.getHeight())
+                        && (!(entity.getY() + entity.getHeight() < car.getY()
+                        + (car.getHeight() * 0.9)))) {
 
-                zombiRect.set(entity.getX(), entity.getY(), entity.getWidth(),
-                        entity.getHeight());
-                carRect.set(car.getX(), car.getY(), car.getWidth(),
-                        car.getHeight());
+                    zombiRect.set(entity.getX(), entity.getY(), entity.getWidth(),
+                            entity.getHeight());
+                    carRect.set(car.getX(), car.getY(), car.getWidth(),
+                            car.getHeight());
 
-                if (OverlapTester.overlapRectangles(zombiRect, carRect)
-                        && (!entity.dead)) {
+                    if (OverlapTester.overlapRectangles(zombiRect, carRect)
+                            && (!entity.dead)) {
 
 					/*
                      * Check if we hit the WRENCH, if yes repair the car
 					 */
-                    if (entity.kindOfZombie == Zombie.ZOMBIE_WRENCH) {
-                        hud.setMessage("Faster!");
-                        hud.drawMessageText = true;
-                        car.repair();
+                        if (entity.kindOfZombie == Zombie.ZOMBIE_WRENCH) {
+                            hud.setMessage("Faster!");
+                            hud.drawMessageText = true;
+                            car.repair();
 
-                        //TODO Set speedup factor
-                        Gameplay.level += 0.2;
-                        Gameplay.setSpawnWrench(false);
-                        Gameplay.wrenchOnScreen = false;
-                        entity.remove();
-                        pool.free(entity);
-                        zombies.remove(i);
+                            //TODO Set speedup factor
+                            Gameplay.level += 0.2;
+                            Gameplay.setSpawnWrench(false);
+                            Gameplay.wrenchOnScreen = false;
+                            entity.remove();
+                            pool.free(entity);
+                            zombies.remove(i);
 
 //                    } else if (entity.kindOfZombie == Zombie.ZOMBIE_EXIT) {
 //
@@ -163,42 +211,43 @@ public class MainScreen implements Screen {
 //                        Gameplay.resetScore();
 //                        game.setScreen(new LoadingScreen(game));
 
-                    } else {
-                        car.hit(entity.hitpoints);
-                        Gameplay.score += entity.hitpoints;
-                        entity.killZombie();
-                        particles.setPosition(car.getX() + car.getWidth() / 2,
-                                entity.getY());
-                        particles.createBlood();
-                    }
+                        } else {
+                            car.hit(entity.hitpoints);
+                            Gameplay.score += entity.hitpoints;
+                            entity.killZombie();
+                            particles.setPosition(car.getX() + car.getWidth() / 2,
+                                    entity.getY());
+                            particles.createBlood();
+                        }
                     /*
                      * Update the HealthBar when anything is hit.
 					 */
-                    hud.setHealth(Car.health);
+                        hud.setHealth(Car.health);
 
+                    }
                 }
-            }
 
 			/*
              * If Zombie is out of bounds, release it
 			 */
 
-            if (entity.oob) {
-                if (entity.kindOfZombie == Zombie.ZOMBIE_WRENCH) {
-                    Gameplay.setSpawnWrench(true);
-                    Gameplay.wrenchOnScreen = false;
-                }
+                if (entity.oob) {
+                    if (entity.kindOfZombie == Zombie.ZOMBIE_WRENCH) {
+                        Gameplay.setSpawnWrench(true);
+                        Gameplay.wrenchOnScreen = false;
+                    }
 
 //                if (entity.kindOfZombie == Zombie.ZOMBIE_EXIT) {
 //                    Gameplay.exitOnScreen = false;
 //                    Gameplay.spawnExit = false;
 //                    Gameplay.exitMileage = 0;
 //                }
-                entity.remove();
-                pool.free(entity);
-                zombies.remove(i);
-            }
+                    entity.remove();
+                    pool.free(entity);
+                    zombies.remove(i);
+                }
 
+            }
         }
     }
 
@@ -245,7 +294,13 @@ public class MainScreen implements Screen {
         muteStyle.checked = Assets.img_sound_off;
         muteStyle.up = Assets.img_sound_on;
 
-        final Button muteButton = new Button(muteStyle);
+        muteButton = new Button(muteStyle) {
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                setZIndex(99);
+                super.draw(batch, parentAlpha);
+            }
+        };
 
         if (Assets.isMuted) {
             Assets.unMute();
@@ -283,7 +338,13 @@ public class MainScreen implements Screen {
         playStyle.checked = Assets.img_play;
         playStyle.up = Assets.img_pause;
 
-        final Button playButton = new Button(playStyle);
+        playButton = new Button(playStyle) {
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                setZIndex(99);
+                super.draw(batch, parentAlpha);
+            }
+        };
 
 
         playButton.addListener(new ClickListener() {
@@ -320,7 +381,13 @@ public class MainScreen implements Screen {
     }
 
     private void setUpSteering(Stage stage) {
-        final Button leftButton = new ImageButton(Assets.img_left);
+        leftButton = new ImageButton(Assets.img_left) {
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                setZIndex(99);
+                super.draw(batch, parentAlpha);
+            }
+        };
 
 
         leftButton.addListener(new ClickListener() {
@@ -340,10 +407,15 @@ public class MainScreen implements Screen {
         leftButton.setHeight(100);
         leftButton.setX(5);
         leftButton.setY(ZombieDrive.HEIGHT / 12);
-        leftButton.setZIndex(99);
         stage.addActor(leftButton);
 
-        final Button rightButton = new ImageButton(Assets.img_right);
+        rightButton = new ImageButton(Assets.img_right) {
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                setZIndex(99);
+                super.draw(batch, parentAlpha);
+            }
+        };
         rightButton.addListener(new ClickListener() {
                                     @Override
                                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -360,7 +432,6 @@ public class MainScreen implements Screen {
         );
         rightButton.setWidth(100);
         rightButton.setHeight(100);
-        rightButton.setZIndex(99);
         rightButton.setX(ZombieDrive.WIDTH - rightButton.getWidth() - 5);
         rightButton.setY(ZombieDrive.HEIGHT / 12);
         stage.addActor(rightButton);
@@ -406,4 +477,11 @@ public class MainScreen implements Screen {
         stage.dispose();
         Assets.destroy();
     }
+
+    private void removeAllButtons() {
+        playButton.remove();
+        leftButton.remove();
+        rightButton.remove();
+    }
+
 }

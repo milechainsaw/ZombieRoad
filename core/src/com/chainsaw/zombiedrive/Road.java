@@ -22,10 +22,12 @@ public class Road extends Actor {
 
     @Override
     public void act(float delta) {
-        speed = (ZombieDrive.HEIGHT / (float) (25 / (ZombieDrive.GAME_SPEED * Gameplay.level)))
-                * delta / roadImg.getHeight();
-        screenBackground.scroll(0, -speed);
-        Gameplay.addDistance(speed);
+        if (!Gameplay.gameOver) {
+            speed = (ZombieDrive.HEIGHT / (float) (25 / (ZombieDrive.GAME_SPEED * Gameplay.level)))
+                    * delta / roadImg.getHeight();
+            screenBackground.scroll(0, -speed);
+            Gameplay.addDistance(speed);
+        }
 
     }
 

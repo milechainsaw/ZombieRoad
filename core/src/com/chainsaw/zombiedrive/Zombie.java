@@ -181,20 +181,21 @@ public class Zombie extends Actor implements Poolable {
             hitSound.play(0.3f);
         }
         zombieImg = Assets.img_blood;
+        if (!Gameplay.gamePaused) {
+            switch (kindOfZombie) {
+                case ZOMBIE_FAT:
+                    Gameplay.killCount_F++;
+                    break;
+                case ZOMBIE_FEMALE:
+                    Gameplay.killCount_W++;
+                    break;
+                case ZOMBIE_NORMAL:
+                    Gameplay.killCount_N++;
+                    break;
+            }
 
-        switch (kindOfZombie) {
-            case ZOMBIE_FAT:
-                Gameplay.killCount_F++;
-                break;
-            case ZOMBIE_FEMALE:
-                Gameplay.killCount_W++;
-                break;
-            case ZOMBIE_NORMAL:
-                Gameplay.killCount_N++;
-                break;
+            dead = true;
         }
-
-        dead = true;
     }
 
     @Override

@@ -118,8 +118,11 @@ public class Car extends Actor {
         } else {
             batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
         }
-        if (smoking) smoke.draw(batch);
+        if (Gameplay.gamePaused) {
+            batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
+        }
 
+        if (smoking) smoke.draw(batch);
         if (getX() > mLastX + 10 || getX() < mLastX - 10) {
             if (MathUtils.random(0, 10) > 5) {
                 Assets.skid_1.play(0.1f);
@@ -134,37 +137,38 @@ public class Car extends Actor {
 
 
     public void hit(int hitpoints) {
-        health -= hitpoints;
+        if (!wrecked) {
+            health -= hitpoints;
 
-        if (health < 0 || health == 0) {
-            smoke.y = (int) (getY() + height / 2);
-            Assets.explode.play(0.4f);
-            smoke.explode();
-            wrecked = true;
+            if (health < 0 || health == 0) {
+                smoke.y = (int) (getY() + height / 2);
+                Assets.explode.play(0.4f);
+                smoke.explode();
+                wrecked = true;
+            }
+
+            if (health < DAMAGE_HALF) {
+                carImg = Assets.img_car_L;
+                if (!smoking) {
+                    smoke.createSmoke();
+                    smoking = true;
+                }
+
+            } else if (health < DAMAGE_NONE) {
+                carImg = Assets.img_car_M;
+                if (smoking) {
+                    smoke.stopSmoke();
+                    smoking = false;
+                }
+            } else {
+                carImg = Assets.img_car_H;
+                if (smoking) {
+                    smoke.stopSmoke();
+                    smoking = false;
+                }
+            }
+
         }
-
-
-        if (health < DAMAGE_HALF) {
-            carImg = Assets.img_car_L;
-            if (!smoking) {
-                smoke.createSmoke();
-                smoking = true;
-            }
-
-        } else if (health < DAMAGE_NONE) {
-            carImg = Assets.img_car_M;
-            if (smoking) {
-                smoke.stopSmoke();
-                smoking = false;
-            }
-        } else {
-            carImg = Assets.img_car_H;
-            if (smoking) {
-                smoke.stopSmoke();
-                smoking = false;
-            }
-        }
-
     }
 
     public void repair() {

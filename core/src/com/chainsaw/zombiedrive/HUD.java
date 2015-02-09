@@ -42,21 +42,21 @@ public class HUD extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         this.setZIndex(13);
+        if (!Gameplay.gameOver) {
+            if (Gameplay.spawnWrench && !Gameplay.wrenchOnScreen) {
+                batch.setColor(1, 1, 1, alphaBlinker());
+                batch.draw(Assets.img_zombie_wrench, Gameplay.getWrenchX(), wrenchY);
+            }
 
-        if (Gameplay.spawnWrench && !Gameplay.wrenchOnScreen) {
-            batch.setColor(1, 1, 1, alphaBlinker());
-            batch.draw(Assets.img_zombie_wrench, Gameplay.getWrenchX(), wrenchY);
+            if (drawMessageText) {
+                drawMessageText(batch);
+            }
+
+            batch.setColor(1, 1, 1, 1);
+            // drawScore(batch);
+            this.setZIndex(12);
+            batch.draw(hudTexture, 0, 0);
         }
-
-        if (drawMessageText) {
-            drawMessageText(batch);
-        }
-
-        batch.setColor(1, 1, 1, 1);
-        // drawScore(batch);
-        this.setZIndex(12);
-        batch.draw(hudTexture, 0, 0);
-
     }
 
     private void drawMessageText(Batch batch) {
