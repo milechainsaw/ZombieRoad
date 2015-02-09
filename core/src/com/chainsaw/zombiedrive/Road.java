@@ -22,19 +22,18 @@ public class Road extends Actor {
 
     @Override
     public void act(float delta) {
-        if (!Gameplay.gameOver) {
-            speed = (ZombieDrive.HEIGHT / (float) (25 / (ZombieDrive.GAME_SPEED * Gameplay.level)))
-                    * delta / roadImg.getHeight();
-            screenBackground.scroll(0, -speed);
+        speed = (ZombieDrive.HEIGHT / (float) (25 / (ZombieDrive.GAME_SPEED * Gameplay.level)))
+                * delta / roadImg.getHeight();
+        screenBackground.scroll(0, -speed);
+        if (!Gameplay.gamePaused)
             Gameplay.addDistance(speed);
-        }
-
     }
 
     @Override
     public void draw(Batch batch, float delta) {
         setZIndex(0);
         batch.disableBlending();
+        batch.setColor(1f, 1f, 1f, 1f);
         screenBackground.draw(batch);
         batch.enableBlending();
     }

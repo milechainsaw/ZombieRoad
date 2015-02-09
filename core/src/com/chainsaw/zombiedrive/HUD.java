@@ -53,7 +53,6 @@ public class HUD extends Actor {
             }
 
             batch.setColor(1, 1, 1, 1);
-            // drawScore(batch);
             this.setZIndex(12);
             batch.draw(hudTexture, 0, 0);
         }

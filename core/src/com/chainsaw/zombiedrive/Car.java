@@ -84,8 +84,9 @@ public class Car extends Actor {
 
     }
 
+
     @Override
-    public void draw(Batch batch, float parentAlpha) {
+    public void act(float delta) {
         if (this.getX() < 0) {
             this.setX(0);
         }
@@ -107,22 +108,6 @@ public class Car extends Actor {
         smoke.x = (int) (getX() + width / 2);
         Gameplay.carX = getX();
 
-
-        setZIndex(9);
-        if (!wrecked) {
-            batch.draw(this.headlightsImg, getX()
-                    - (headlightsImg.getRegionWidth() / 2) + (width / 2), getY()
-                    - headlights_height + height);
-            setZIndex(10);
-            batch.draw(this.carImg, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-        } else {
-            batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
-        }
-        if (Gameplay.gamePaused) {
-            batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
-        }
-
-        if (smoking) smoke.draw(batch);
         if (getX() > mLastX + 10 || getX() < mLastX - 10) {
             if (MathUtils.random(0, 10) > 5) {
                 Assets.skid_1.play(0.1f);
@@ -133,6 +118,30 @@ public class Car extends Actor {
             setRotation(0f);
         }
         mLastX = getX();
+        super.act(delta);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (!wrecked) {
+            setZIndex(10);
+            batch.setColor(1f, 1f, 1f, 1f);
+            batch.draw(this.headlightsImg, getX()
+                    - (headlightsImg.getRegionWidth() / 2) + (width / 2), getY()
+                    - headlights_height + height);
+            setZIndex(11);
+            setColor(1f, 1f, 1f, 1f);
+            batch.draw(this.carImg, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        } else {
+            setColor(1f, 1f, 1f, 1f);
+            batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
+        }
+//        if (Gameplay.gamePaused && !wrecked) {
+//            batch.draw(Assets.dark, 0, 0, ZombieDrive.WIDTH, ZombieDrive.HEIGHT);
+//        }
+
+        if (smoking) smoke.draw(batch);
+
     }
 
 
@@ -142,7 +151,8 @@ public class Car extends Actor {
 
             if (health < 0 || health == 0) {
                 smoke.y = (int) (getY() + height / 2);
-                Assets.explode.play(0.4f);
+                if (!Assets.isMuted)
+                    Assets.explode.play(0.4f);
                 smoke.explode();
                 wrecked = true;
             }

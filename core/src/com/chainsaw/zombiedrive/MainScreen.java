@@ -47,6 +47,7 @@ public class MainScreen implements Screen {
             return new Zombie();
         }
     };
+    private float buttonsAlpha = 0.4f;
 
 
     public MainScreen(Game game) {
@@ -73,7 +74,6 @@ public class MainScreen implements Screen {
         stage.addActor(car);
         stage.addActor(hud);
         stage.addActor(particles);
-        setUpSteering(stage);
 
         Gdx.input.setCatchMenuKey(true);
         Gdx.input.setCatchBackKey(false);
@@ -87,6 +87,8 @@ public class MainScreen implements Screen {
         Assets.engineSound.play();
         setUpMuteButton(stage);
         setUpPlayPause(stage);
+        setUpSteering(stage);
+
     }
 
     @Override
@@ -297,6 +299,7 @@ public class MainScreen implements Screen {
         muteButton = new Button(muteStyle) {
             @Override
             public void draw(Batch batch, float parentAlpha) {
+                setColor(1, 1, 1, buttonsAlpha);
                 setZIndex(99);
                 super.draw(batch, parentAlpha);
             }
@@ -342,6 +345,7 @@ public class MainScreen implements Screen {
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 setZIndex(99);
+                setColor(1, 1, 1, buttonsAlpha);
                 super.draw(batch, parentAlpha);
             }
         };
@@ -385,6 +389,7 @@ public class MainScreen implements Screen {
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 setZIndex(99);
+                setColor(1, 1, 1, buttonsAlpha);
                 super.draw(batch, parentAlpha);
             }
         };
@@ -413,6 +418,7 @@ public class MainScreen implements Screen {
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 setZIndex(99);
+                setColor(1, 1, 1, buttonsAlpha);
                 super.draw(batch, parentAlpha);
             }
         };
